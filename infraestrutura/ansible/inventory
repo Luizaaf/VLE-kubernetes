@@ -1,0 +1,5 @@
+[master]
+54.198.45.24
+
+[master:vars]
+ansible_user=ubuntu
