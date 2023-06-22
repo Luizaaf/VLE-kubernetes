@@ -1,0 +1,6 @@
+/env
+
+.terraform
+.terraform.lock.hc
+terraform.tfstate
+terraform.tfstate.backup
