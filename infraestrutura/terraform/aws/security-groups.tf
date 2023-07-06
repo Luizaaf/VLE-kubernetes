@@ -1,19 +1,4 @@
-terraform {
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-      version = "~> 4.0"
-    }
-  }    
-}
-
-provider "aws" {
-
-  region = "us-east-1" # Norte da Virginia
-
-}
-
-resource "aws_security_group" "allow_kubernetes" {
+resource "aws_security_group" "this" {
   name = "allow_kubernetes"
   description = "group for allow kubernetes traffic"
   vpc_id = "vpc-0c2e74a43dce77033"
@@ -87,56 +72,5 @@ resource "aws_security_group" "allow_kubernetes" {
     protocol         = "-1"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
-  }
-}
-
-resource "aws_instance" "master" {
-  
-  ami = "ami-053b0d53c279acc90"
-  instance_type = "t2.medium"
-  vpc_security_group_ids = [aws_security_group.allow_kubernetes.id]
-  key_name = "vockey"
-
-  ebs_block_device {
-    volume_size = 20
-    device_name = "/dev/sda1"
-  }
-
-  tags = {
-    Name = "master"
-  }
-}
-
-resource "aws_instance" "worker-01" {
-  
-  ami = "ami-053b0d53c279acc90"
-  instance_type = "t2.medium"
-  vpc_security_group_ids = [aws_security_group.allow_kubernetes.id]
-  key_name = "vockey"
-
-  ebs_block_device{
-    volume_size = 20
-    device_name = "/dev/sda1"
-  }
-
-  tags = {
-    Name = "worker-01"
-  }
-}
-
-resource "aws_instance" "worker-02" {
-  
-  ami = "ami-053b0d53c279acc90"
-  instance_type = "t2.medium"
-  vpc_security_group_ids = [aws_security_group.allow_kubernetes.id]
-  key_name = "vockey"
-
-  ebs_block_device {
-    volume_size = 20
-    device_name = "/dev/sda1"
-  }
-
-  tags = {
-    Name = "worker-02"
   }
 }
