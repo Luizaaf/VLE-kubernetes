@@ -1,7 +1,6 @@
 from python_terraform import *
 
-options = {1: "Criar cluster", 2: "Destruir cluster",
-           3: "Atualizar cluster", 4: "Links uteis", 5: "Sair"}
+options = {1: "Criar cluster", 2: "Destruir cluster", 3: "Sair"}
 
 
 def apply_all():
@@ -41,6 +40,6 @@ while not exit:
     elif int(option_choice) == 2:
         destroy_all()
 
-    elif int(option_choice) == 5:
+    elif int(option_choice) == 3:
         print("\nObrigado por usar o programa até uma proxima!\n")
         exit = True
