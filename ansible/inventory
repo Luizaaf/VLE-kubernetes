@@ -1,0 +1,12 @@
+[master]
+
+
+[workers]
+
+
+[cluster:children]
+master
+workers
+
+[var:cluster]
+

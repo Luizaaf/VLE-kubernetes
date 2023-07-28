@@ -1,45 +1,69 @@
-from python_terraform import *
-
-options = {1: "Criar cluster", 2: "Destruir cluster", 3: "Sair"}
-
-
-def apply_all():
-    t = Terraform(working_dir="infraestrutura/terraform/aws")
-
-    return_code, stdout, stderr = t.init(no_color=IsFlagged, input=False)
-    print(stdout)
-
-    return_code, stdout, stderr = t.plan(no_color=IsFlagged, input=False)
-    print(stdout)
-
-    return_code, stdout, stderr = t.apply(
-        no_color=IsFlagged, input=False, skip_plan=True)
-    print(stdout)
+import subprocess
+import click
 
 
-def destroy_all():
-
-    tf = Terraform(working_dir="infraestrutura/terraform/aws")
-    return_code = tf.destroy(capture_output='yes', no_color=IsNotFlagged,
-                             force=IsNotFlagged, auto_approve=True)
-    print(return_code)
+@click.group()
+def cli():
+    pass
 
 
-exit = False
-while not exit:
-    print("VLE - for Kubernetes\n",)
+def terraform_init():
+    """
+    Inicia o diretório de trabalho do terraform
+    """
+    try:
+        subprocess.run(
+            ['terraform', '-chdir=infraestrutura/aws', 'init'], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Terraform init falhou com o erro: {e}")
 
-    for k, v in options.items():
-        print(f"{k} - {v}")
 
-    option_choice = input("\nDigite a opção desejada: ")
+def terraform_plan():
+    """
+    Executa o plano da configuração do terraform.
+    """
+    try:
+        terraform_init()
+        subprocess.run(['terraform', '-chdir=infraestrutura/aws',
+                        'plan', '-out=tfplan'], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Terraform plan falhou com erro: {e}")
 
-    if int(option_choice) == 1:
-        apply_all()
 
-    elif int(option_choice) == 2:
-        destroy_all()
+def terraform_apply():
+    """
+    Aplica os arquivos de configuração do terraform.
+    """
+    try:
+        subprocess.run(['terraform', '-chdir=infraestrutura/aws',
+                        'apply', '"tfplan"'], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Terraform apply falhou com erro: {e}")
 
-    elif int(option_choice) == 3:
-        print("\nObrigado por usar o programa até uma proxima!\n")
-        exit = True
+
+def terraform_destroy():
+    try:
+        subprocess.run(
+            ['terraform', '-chdir=infraestrutura/aws', 'destroy'], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Terraform destroy falhou com o erro: {e}")
+
+
+@click.command()
+def create():
+    """
+    Realiza a criação do cluster kubernetes.
+    """
+    terraform_plan()
+
+
+@click.command()
+def destroy():
+    terraform_destroy()
+
+
+cli.add_command(create)
+cli.add_command(destroy)
+
+if __name__ == '__main__':
+    cli()
