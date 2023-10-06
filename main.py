@@ -13,7 +13,7 @@ def terraform_init():
     """
     try:
         subprocess.run(
-            ['terraform', '-chdir=infraestrutura/aws', 'init'], check=True)
+            ['terraform', '-chdir=infraestrutura', 'init'], check=True)
     except subprocess.CalledProcessError as e:
         print(f"Terraform init falhou com o erro: {e}")
 
@@ -24,7 +24,7 @@ def terraform_plan():
     """
     try:
         terraform_init()
-        subprocess.run(['terraform', '-chdir=infraestrutura/aws',
+        subprocess.run(['terraform', '-chdir=infraestrutura',
                         'plan', '-out=tfplan'], check=True)
     except subprocess.CalledProcessError as e:
         print(f"Terraform plan falhou com erro: {e}")
@@ -35,8 +35,8 @@ def terraform_apply():
     Aplica os arquivos de configuração do terraform.
     """
     try:
-        subprocess.run(['terraform', '-chdir=infraestrutura/aws',
-                        'apply', '"tfplan"'], check=True)
+        subprocess.run(['terraform', '-chdir=infraestrutura',
+                        'apply', 'tfplan'], check=True)
     except subprocess.CalledProcessError as e:
         print(f"Terraform apply falhou com erro: {e}")
 
@@ -44,7 +44,7 @@ def terraform_apply():
 def terraform_destroy():
     try:
         subprocess.run(
-            ['terraform', '-chdir=infraestrutura/aws', 'destroy'], check=True)
+            ['terraform', '-chdir=infraestrutura', 'destroy'], check=True)
     except subprocess.CalledProcessError as e:
         print(f"Terraform destroy falhou com o erro: {e}")
 
@@ -55,10 +55,14 @@ def create():
     Realiza a criação do cluster kubernetes.
     """
     terraform_plan()
+    terraform_apply()
 
 
 @click.command()
 def destroy():
+    """
+    Realizar a destruição dos cluster kubernetes.
+    """
     terraform_destroy()
 
 

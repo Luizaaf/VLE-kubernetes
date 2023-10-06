@@ -1,0 +1,58 @@
+---
+- name: Instalar o container runtime
+  hosts: all
+  tasks:
+    - name: COnfigurando os modulos do Kernel
+      ansible.builtin.copy:
+        src: ./k8s.conf
+        dest: /etc/modules-load.d/k8s.conf
+        mode: '644'
+    
+    - name: Adicionando o modulo overlay
+      modprobe:
+        name: overlay br_netfilter
+        state: present
+
+    - name: Adicionando o modulo br_netfilter
+      modprobe:
+        name: br_netfilter
+        state: present
+
+    - name: COnfigurando o sysctl
+      ansible.builtin.copy:
+        src: ./k8s-cri.conf
+        dest:  /etc/sysctl.d/k8s.conf
+        mode: '644'
+    
+    - name: Aplicando os parametros do sysctl
+      ansible.builtin.command: "sysctl --system"
+
+    - name: Adicionando chave gpg
+      ansible.builtin.apt_key:
+        url: https://download.docker.com/linux/debian/gpg
+        state: present
+    
+    - name: Adicionando o repositorio para instalar o containerd
+      ansible.builtin.apt_repository:
+        repo: deb https://download.docker.com/linux/debian jammy stable
+        state: present
+    
+    - name: Instalando o containerd
+      ansible.builtin.apt:
+        name: containerd.io
+        update_cache: yes
+
+    - name: Criando o arquivo de configuração do containerd
+      ansible.builtin.shell: containerd config default > /etc/containerd/config.toml
+
+    - name: Alterando o arquivo de configuração
+      ansible.builtin.command: sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml
+
+    - name: Reiniciando o containerd
+      ansible.builtin.service:
+        name: containerd
+        state: restarted
+        
+      
+      
+        

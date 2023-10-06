@@ -5,3 +5,5 @@ env/
 terraform.tfstate
 terraform.tfstate.backup
 tfplan
+
+.vscode

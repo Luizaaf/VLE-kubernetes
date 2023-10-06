@@ -1,12 +1,4 @@
-[master]
+[control_plane]
 
 
-[workers]
-
-
-[cluster:children]
-master
-workers
-
-[var:cluster]
-
+[worker_node]
