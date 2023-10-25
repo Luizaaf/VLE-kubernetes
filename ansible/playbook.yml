@@ -1,8 +1,9 @@
 ---
-- name: Instalar o container runtime
+- name: Instalando o container runtime
   hosts: all
   tasks:
-    - name: COnfigurando os modulos do Kernel
+    - name: Configurando modulos do kernel requeridos.
+
       ansible.builtin.copy:
         src: ./k8s.conf
         dest: /etc/modules-load.d/k8s.conf
@@ -52,7 +53,37 @@
       ansible.builtin.service:
         name: containerd
         state: restarted
+    
+    - name: Instalando o kubeadm, kubelet e kubectl
+      hosts: all
+      tasks:
+        - name: Instalando pré-requisitos
+          ansible.builtin.apt:
+            pkg:
+              - apt-transport-https 
+              - ca-certificates 
+              - curl
+            state: present
         
+        - name: Baixando o chave do repositórios de pacotes do Kubernetes
+          ansible.builtin.apt_key:
+            url: deb https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key
+            state: present
+        
+        - name: Repósitorio para instalação do kubeadm
+          ansible.builtin.apt_repository:
+            repo: deb https://pkgs.k8s.io/core:/stable:/v1.28/deb/ jammy stable
+            state: present
+
+        - name: Instalando os pacotes do kubernetes
+          ansible.builtin.apt:
+            pkg:
+              - kubelet 
+              - kubeadm 
+              - kubectl
+            state: present
+        
+
       
       
         
