@@ -1,11 +1,13 @@
 #!/bin/bash
 
+# instalar python
 sudo apt-get update
 sudo apt-get install python3 python3-pip -y
 
-pip install boto3 botocore ansible
+# instalar ansible e awscli
+pip3 install boto3 botocore ansible awscli 
 
-# installing terraform [https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli]
+# instalar terraform [https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli]
 
 sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
 
@@ -19,3 +21,6 @@ sudo tee /etc/apt/sources.list.d/hashicorp.list
 
 sudo apt update
 sudo apt install terraform -y
+
+# instalar jq
+sudo apt install jq -y
