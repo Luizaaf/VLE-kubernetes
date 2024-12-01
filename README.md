@@ -1,6 +1,6 @@
 ## Ambientes Virtuais de Aprendizagem para o Kubernetes
 
-Esse repostório possui uma ferramenta de linha de comando que irá fornecer uma ambiente de estudos para o Kubernetes de forma simples e intuitiva buscando o menor gasto possivel. 
+Esse repostório possui uma ferramenta de linha de comando que irá fornecer um ambiente de estudos para o Kubernetes de forma simples e intuitiva buscando o menor gasto possivel. A ferramenta tem como foco usuários univestários da rede pública, a partir disso ela se encontra funcional nos provedores de nuvens da Azure e AWS que fornecem meios de acesso gratuíro para alunos univesitários.
 
 #### Observações
 
@@ -8,7 +8,7 @@ Esse repostório possui uma ferramenta de linha de comando que irá fornecer uma
 + A ferramenta só foi testada em ambientes linux Ubuntu e Fedora.
 
 ### Dependências
-	
+---
 + Python.
 	+ O python já vem pré instalado em computadores linux
 + Terraform.
@@ -36,4 +36,7 @@ Esse repostório possui uma ferramenta de linha de comando que irá fornecer uma
 
 + Para instalar a ferramenta tudo o que você precisa fazer é clonar esse repostório.
 	+ ```git clone https://github.com/Luizaaf/VLE-kubernetes.git``` 
+	
+### Configuração de acesso as nuvens.
 
++ Para configurar o acesso na AWS leia as instruçoes contidas [aqui](configuracoes_de_acesso/configuracao_aws.md)
