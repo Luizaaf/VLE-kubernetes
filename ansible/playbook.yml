@@ -70,7 +70,7 @@
     - name: Baixando o chave do repositórios de pacotes do Kubernetes
       ansible.builtin.shell: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 
-    - name: Adicionando o repositório do containerd 
+    - name: Adicionando o repositório do Kubernetes 
       ansible.builtin.lineinfile: 
         path: /etc/apt/sources.list.d/kubernetes.list 
         line: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.31/deb/ /" 

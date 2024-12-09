@@ -8,8 +8,6 @@ terraform {
 }
 
 provider "azurerm" {
-  subscription_id = "d73c18d0-4278-43dc-b37b-b58fe35693e6"
-  tenant_id       = "9f23cf0a-4a0b-499a-8f2d-7ccdc2648847"
   features {}
 }
 
@@ -33,73 +31,6 @@ resource "azurerm_subnet" "kubernetes-subnet" {
   resource_group_name  = azurerm_resource_group.kubernetes-group.name
   virtual_network_name = azurerm_virtual_network.kubernetes-vnet.name
   address_prefixes     = ["10.0.2.0/24"]
-}
-
-# Criando grupo de segurança.
-resource "azurerm_network_security_group" "kubernetes-security-group" {
-  name                = "kubernetesSecutiyGroup"
-  location            = azurerm_resource_group.kubernetes-group.location
-  resource_group_name = azurerm_resource_group.kubernetes-group.name
-
-  security_rule {
-    name                       = "SSH"
-    priority                   = 100
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "22"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
-
-  security_rule {
-    name                       = "KubernetesAPIserver"
-    priority                   = 101
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "6443"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
-
-  security_rule {
-    name                       = "etcdServerClientAPI"
-    priority                   = 102
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "[2379-2380]"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
-
-  security_rule {
-    name                       = "KubeletAPI"
-    priority                   = 103
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "[10250-10257]"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
-
-  security_rule {
-    name                       = "NodePortServices†"
-    priority                   = 104
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "[30000-32767]"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
 }
 
 # Criando endereços IP Públicos
@@ -174,22 +105,6 @@ resource "azurerm_network_interface" "net-interface3" {
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.worker2-ip.id
   }
-}
-
-# Associando o grupo de segurança com as interfaces de rede.
-resource "azurerm_network_interface_security_group_association" "kub-security1" {
-  network_interface_id      = azurerm_network_interface.net-interface1.id
-  network_security_group_id = azurerm_network_security_group.kubernetes-security-group.id
-}
-
-resource "azurerm_network_interface_security_group_association" "kub-security2" {
-  network_interface_id      = azurerm_network_interface.net-interface2.id
-  network_security_group_id = azurerm_network_security_group.kubernetes-security-group.id
-}
-
-resource "azurerm_network_interface_security_group_association" "kub-security3" {
-  network_interface_id      = azurerm_network_interface.net-interface3.id
-  network_security_group_id = azurerm_network_security_group.kubernetes-security-group.id
 }
 
 # Criando máquina virtuais linux
