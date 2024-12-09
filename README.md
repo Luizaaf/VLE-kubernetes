@@ -40,6 +40,6 @@ Esse repostório possui uma ferramenta de linha de comando que irá fornecer um 
 ### Configuração de acesso as nuvens.
 ---
 + Para configurar o acesso na AWS leia as instruçoes contidas [aqui](configuracoes_de_acesso/configuracao_aws.md)
-+ Para configurar o acesso na Azure leia as instruções contidas [aqui](configuracoes_de_acesso/configuracao_azure.md)
++ Na Azure, primeiro será preciso criar uma conta e após isso realizar algumas configurações, todo o passo a passo se encontra [aqui](configuracoes_de_acesso/configuracao_azure.md)
 
 
