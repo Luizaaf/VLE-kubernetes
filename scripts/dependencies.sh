@@ -1,26 +1,14 @@
 #!/bin/bash
 
-# instalar python
-sudo apt-get update
-sudo apt-get install python3 python3-pip -y
+sistema=$(cat /etc/os-release | awk -F= '/^ID=/ {print $2}')
 
-# instalar ansible e awscli
-pip3 install boto3 botocore ansible awscli 
-
-# instalar terraform [https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli]
-
-sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
-
-wget -O- https://apt.releases.hashicorp.com/gpg | \
-gpg --dearmor | \
-sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
-
-echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
-https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
-sudo tee /etc/apt/sources.list.d/hashicorp.list
-
-sudo apt update
-sudo apt install terraform -y
-
-# instalar jq
-sudo apt install jq -y
+if [ $sistema = 'fedora' ]; then
+	sudo dnf install python3 python3-pip terraform azure-cli jq -y
+	pip3 install boto3 botocore ansible awscli
+elif [ $sistema = 'ubuntu' ]; then
+	sudo apt-get update
+	sudo apt-get install python3 python3-pip terraform jq -y
+	pip3 install boto3 botocore ansible awscli
+else
+	echo "sistema não suportado!"
+fi

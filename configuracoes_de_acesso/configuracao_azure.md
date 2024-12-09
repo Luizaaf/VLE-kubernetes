@@ -24,3 +24,5 @@
 6. **Aceite os termos e pronto, você terá 100 USD para gastar como quiser na Azure.**
 
 ![](images/termos_de_uso.png)
+
+### Configurando a Azure para uso da ferramenta.
