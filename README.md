@@ -42,4 +42,24 @@ Esse repostório possui uma ferramenta de linha de comando que irá fornecer um 
 + Para configurar o acesso na AWS leia as instruçoes contidas [aqui](configuracoes_de_acesso/configuracao_aws.md)
 + Na Azure, primeiro será preciso criar uma conta e após isso realizar algumas configurações, todo o passo a passo se encontra [aqui](configuracoes_de_acesso/configuracao_azure.md)
 
+### Baixando a ferramenta.
+
++ Para baixar a ferramenta clone esse repositório para sua máquina local com o seguinte comando.
+
+```
+git clone https://github.com/Luizaaf/VLE-kubernetes.git
+```
+
+### Utilizando a ferramenta.
+
++ Acesse o diretório e execute o arquivo `main.py`.
+
+```
+cd VLE-kubernets
+python3 main.py
+```
+
++ Você será apresentado para a seguinte interface.
+
+![](images/interface_vle.png)
 
