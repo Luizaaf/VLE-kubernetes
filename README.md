@@ -32,11 +32,6 @@ Esse repostório possui uma ferramenta de linha de comando que irá fornecer um 
 	+ Ubuntu: ```sudo apt install jq```
 	+ Fedora: ```sudo dnf install jq```
 	
-### Instalação
----
-+ Para instalar a ferramenta tudo o que você precisa fazer é clonar esse repostório.
-	+ ```git clone https://github.com/Luizaaf/VLE-kubernetes.git``` 
-	
 ### Configuração de acesso as nuvens.
 ---
 + Para configurar o acesso na AWS leia as instruçoes contidas [aqui](configuracoes_de_acesso/configuracao_aws.md)
