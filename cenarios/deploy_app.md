@@ -51,9 +51,10 @@ Saída:
 
 #### Deployment Postgres
 
-Um deployment vai ser o objeto resposavel por gerenciar um conjunto de Pods para execução de um determinado trabalho. Iremos criar um deployment que será resposavel pela execução do Pod que irá conter o container do Postgres em execução. Para isso crie o arquivo `postgres-deployment.yml`, com seu editor de texto preferido.
+Um deployment vai ser o objeto resposavel por gerenciar um conjunto de Pods para execução de um determinado trabalho. Iremos criar um deployment que será resposavel pela execução do Pod que irá conter o container do Postgres em execução. 
 
-```
+```bash
+cat > postgres-deployment.yml << EOF
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -89,10 +90,37 @@ spec:
               secretKeyRef:
                 name: postgres-secret
                 key: postgres-password
-
+EOF
 ```
 
-Após a criação do arquivo, use o comando `kubectl apply -f postgres-deployment.yml`, para realizar a criação do Deployment a partir do arquivo.
+#### Detalhe da configuração
+
+- **Replicas** especifica a quantidade desejada de replicas.
+- **selector** especifica como o deployment identifica quais pods ele gerencia.
+- **template** define o template do Pod usado para criar novos Pods controlado por esse deployment.
+- **containers** especifica os containers dentro do pod.
+- **image** especifica a imagem Docker para o Pod a ser criado.
+- **imagePullPolicy** especifica a politica para baixar a imagem do container.
+- **ports** especifica as portas que o container exponhe.
+- **envFrom** permite ao container carregar variaveis de ambiente from a secret por exemplo.
+
+Aplique essa configuração com o comando:
+
+```bash
+kubectl apply -f postgres-secret.yml
+```
+
+Você pode verficiar se o Deployment foi executado corretamente com o comando:
+
+```bash
+kubectl get deployment 
+```
+
+Saída:
+
+```bash
+
+```
 
 #### Postgres Service
 
