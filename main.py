@@ -1,5 +1,7 @@
 import subprocess
 import os
+import time
+from types import TracebackType
 
 def terraform_init(diretorio):
     """
@@ -50,6 +52,17 @@ def criando_inventario(inventario):
         print(f"Erro ao criar o inventário ansible {e}")
 
 
+
+def run_ansible(playbook_path, inventario):
+    print("Aguardando inicialização completa das maquinas virtuais...")
+    time.sleep(180)
+    try:
+        subprocess.run(['ansible-playbook', '-i', inventario, playbook_path], check=True)
+        print("Playbook executado com sucesso!")
+    except subprocess.CalledProcessError as e:
+        print(f'Erro ao executar playbook {e.stderr}')
+
+
 saida = False
 
 
@@ -74,6 +87,7 @@ while not saida:
             terraform_plan("infraestrutura/aws")
             terraform_apply("infraestrutura/aws")
             criando_inventario("./criando_inventario_aws.sh")
+            run_ansible("ansible/playbook.yml", "ansible/inventory/hosts")
         elif provider == "2":
             terraform_plan("infraestrutura/azure")
             terraform_apply("infraestrutura/azure")

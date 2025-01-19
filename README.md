@@ -1,6 +1,6 @@
 ## Ambientes Virtuais de Aprendizagem para o Kubernetes
 
-Esse repostório possui uma ferramenta de linha de comando que irá fornecer um ambiente de estudos para o Kubernetes de forma simples e intuitiva buscando o menor gasto possivel. A ferramenta tem como foco usuários univestários da rede pública, a partir disso ela se encontra funcional nos provedores de nuvens da Azure e AWS que fornecem meios de acesso gratuíro para alunos univesitários.
+Esse repostório possui uma ferramenta de linha de comando que irá fornecer um ambiente de estudos para o Kubernetes utilizando o Kubeadm de forma simples e intuitiva buscando o menor gasto possivel. A ferramenta tem como foco usuários univestários da rede pública, a partir disso ela se encontra funcional nos provedores de nuvens da Azure e AWS que fornecem meios de acesso gratuíro para alunos univesitários.
 
 #### Observações
 ---
@@ -38,7 +38,7 @@ Esse repostório possui uma ferramenta de linha de comando que irá fornecer um 
 + Na Azure, primeiro será preciso criar uma conta e após isso realizar algumas configurações, todo o passo a passo se encontra [aqui](configuracoes_de_acesso/configuracao_azure.md)
 
 ### Baixando a ferramenta.
-
+---
 + Para baixar a ferramenta clone esse repositório para sua máquina local com o seguinte comando.
 
 ```
@@ -56,5 +56,4 @@ python3 main.py
 
 + Você será apresentado para a seguinte interface.
 
-![](images/interface_vle.png)
-
++ ![](images/interface_vle.png)
