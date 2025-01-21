@@ -47,7 +47,13 @@
       ansible.builtin.shell: containerd config default > /etc/containerd/config.toml
 
     - name: Alterando o arquivo de configuração
-      ansible.builtin.command: sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml
+      ansible.builtin.replace:
+        path: /etc/containerd/config.toml
+        regexp: 'SystemdCgroup = false'
+        replace: 'SystemdCgroup = true'
+
+    # - name: Alterando o arquivo de configuração
+    #  ansible.builtin.command: sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml
 
     - name: Reiniciando o containerd
       ansible.builtin.service:
@@ -66,9 +72,10 @@
           - curl
           - gpg
         state: present
+        update_cache: yes
         
     - name: Baixando o chave do repositórios de pacotes do Kubernetes
-      ansible.builtin.shell: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+      ansible.builtin.shell: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key | sudo gpg --yes --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 
     - name: Adicionando o repositório do Kubernetes 
       ansible.builtin.lineinfile: 

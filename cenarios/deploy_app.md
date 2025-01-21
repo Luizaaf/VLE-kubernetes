@@ -1,3 +1,19 @@
+## Configurando uma aplicação python flask que acessa uma banco de dados postgres.
+
+### Introdução
+
+Este guia vai explorar um processo passo a passo de como realizar o deploy em um cluster Kubernetes de uma aplicação flask que acessa uma banco de dados postgres.
+
+### Prerequisitos
+
+#### Ter acesso a uma conta em uma ambiente de Nuvem
+
+  - Para obter uma conta gratuita na AWS é preciso pedir ao seu professor que lhe insira em uma turma do AWS Academy, caso já seja seu caso siga para o proximo passo.
+  - Para criar uma conta gratuita na Azure você pode seguir o seguinte tutorial [Criando conta na azure](../configuracoes_md/criacao_conta_azure.md)
+
+#### Cluster Kubernetes no qual será realizado o deploy
+
+
 
 ### Deploy do banco de dados Postgres
 
@@ -53,6 +69,9 @@ Saída:
 
 Um deployment vai ser o objeto resposavel por gerenciar um conjunto de Pods para execução de um determinado trabalho. Iremos criar um deployment que será resposavel pela execução do Pod que irá conter o container do Postgres em execução. 
 
+
+#### Criando um deployment para o Postgres
+
 ```bash
 cat > postgres-deployment.yml << EOF
 apiVersion: apps/v1
@@ -93,7 +112,7 @@ spec:
 EOF
 ```
 
-#### Detalhe da configuração
+#### Detalhes da configuração
 
 - **Replicas** especifica a quantidade desejada de replicas.
 - **selector** especifica como o deployment identifica quais pods ele gerencia.
@@ -107,7 +126,7 @@ EOF
 Aplique essa configuração com o comando:
 
 ```bash
-kubectl apply -f postgres-secret.yml
+kubectl apply -f postgres-deployment.yml
 ```
 
 Você pode verficiar se o Deployment foi executado corretamente com o comando:
@@ -124,4 +143,52 @@ Saída:
 
 #### Postgres Service
 
-Um service 
+Um service é um objeto Kubernetes usado para expor uma aplicação que está executnado em um Pod do cluster.
+
+#### Criando um service para o Postgres
+
+```bash
+cat > postgres-svc.yml << EOF
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-svc
+spec:
+  selector:
+    app: postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+EOF
+```
+
+#### Detalhes de configuração
+
+- **targetPort** é a porta dá maquina que irá redicionar para porta do container dentro do Pod.
+- como não é indicado o tipo do service, por padrão ele irá criar uma sevice do tipo `nodePort`, que é uma tipo de service que somente é visivel dentro do próprio cluster.
+
+Aplique essa configuração com o comando:
+
+```bash
+kubectl apply -f postgres-svc.yml
+```
+
+Você pode verficiar se o service foi executado corretamente com o comando:
+
+```bash
+kubectl get svc 
+```
+
+Saída:
+
+```bash
+
+```
+
+#### Criando um configmap para o nosso aplicativo.
+
+
+```bash
+
+```

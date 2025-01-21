@@ -2,12 +2,14 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "3.0"
+      version = "3.42.0"
     }
   }
 }
 
 provider "azurerm" {
+  subscription_id = "d73c18d0-4278-43dc-b37b-b58fe35693e6"
+  tenant_id       = "9f23cf0a-4a0b-499a-8f2d-7ccdc2648847"
   features {}
 }
 
@@ -33,16 +35,158 @@ resource "azurerm_subnet" "kubernetes-subnet" {
   address_prefixes     = ["10.0.2.0/24"]
 }
 
+# Criando grupos de segurança
+resource "azurerm_network_security_group" "ControlNodeNSG" {
+  name                = "ControlNodeNSG"
+  location            = azurerm_resource_group.kubernetes-group.location
+  resource_group_name = azurerm_resource_group.kubernetes-group.name
+
+  security_rule {
+    name                       = "SSH"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "AllowKubernetesAPI"
+    priority                   = 110
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "6443"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "AllowEtcd"
+    priority                   = 120
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "2379-2380"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "AllowKubelet"
+    priority                   = 130
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "10250-10260"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "HTTP"
+    priority                   = 140
+    direction                  = "Outbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "80"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "HTTPS"
+    priority                   = 150
+    direction                  = "Outbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "443"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+}
+
+resource "azurerm_network_security_group" "WorkerNodeNSG" {
+  name                = "WorkerNodeNSG"
+  location            = azurerm_resource_group.kubernetes-group.location
+  resource_group_name = azurerm_resource_group.kubernetes-group.name
+
+  security_rule {
+    name                       = "SSH"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "KubeletAPI"
+    priority                   = 110
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "10249-10260"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "NodePort"
+    priority                   = 120
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "30000-32768"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "HTTP"
+    priority                   = 130
+    direction                  = "Outbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "80"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "HTTPS"
+    priority                   = 140
+    direction                  = "Outbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "443"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+}
+
 # Criando endereços IP Públicos
 resource "azurerm_public_ip" "master-ip" {
   name                = "master-pub-ip"
   resource_group_name = azurerm_resource_group.kubernetes-group.name
   location            = azurerm_resource_group.kubernetes-group.location
   allocation_method   = "Static"
-
-  tags = {
-    environment = "Production"
-  }
 }
 
 resource "azurerm_public_ip" "worker1-ip" {
@@ -50,10 +194,6 @@ resource "azurerm_public_ip" "worker1-ip" {
   resource_group_name = azurerm_resource_group.kubernetes-group.name
   location            = azurerm_resource_group.kubernetes-group.location
   allocation_method   = "Static"
-
-  tags = {
-    environment = "Production"
-  }
 }
 
 resource "azurerm_public_ip" "worker2-ip" {
@@ -61,10 +201,6 @@ resource "azurerm_public_ip" "worker2-ip" {
   resource_group_name = azurerm_resource_group.kubernetes-group.name
   location            = azurerm_resource_group.kubernetes-group.location
   allocation_method   = "Static"
-
-  tags = {
-    environment = "Production"
-  }
 }
 
 # Criando interfaces de rede.
@@ -107,6 +243,22 @@ resource "azurerm_network_interface" "net-interface3" {
   }
 }
 
+# Associando as interfaces de rede ao grupo de segurança
+resource "azurerm_network_interface_security_group_association" "associate1" {
+  network_interface_id      = azurerm_network_interface.net-interface1.id
+  network_security_group_id = azurerm_network_security_group.ControlNodeNSG.id
+}
+
+resource "azurerm_network_interface_security_group_association" "associate2" {
+  network_interface_id      = azurerm_network_interface.net-interface2.id
+  network_security_group_id = azurerm_network_security_group.WorkerNodeNSG.id
+}
+
+resource "azurerm_network_interface_security_group_association" "associate3" {
+  network_interface_id      = azurerm_network_interface.net-interface3.id
+  network_security_group_id = azurerm_network_security_group.WorkerNodeNSG.id
+}
+
 # Criando máquina virtuais linux
 resource "azurerm_linux_virtual_machine" "master_node" {
   name                = "master_node"
@@ -121,7 +273,7 @@ resource "azurerm_linux_virtual_machine" "master_node" {
 
   admin_ssh_key {
     username   = "ubuntu"
-    public_key = file("~/.ssh/azure.pub")
+    public_key = file("~/.ssh/id_rsa.pub")
   }
 
   os_disk {
@@ -193,16 +345,4 @@ resource "azurerm_linux_virtual_machine" "worker-node2" {
     sku       = "server"
     version   = "latest"
   }
-}
-
-output "master-ip" {
-  value = azurerm_public_ip.master-ip.ip_address
-}
-
-output "workernode1-ip" {
-  value = azurerm_public_ip.worker1-ip.ip_address
-}
-
-output "workernode2-ip" {
-  value = azurerm_public_ip.worker2-ip.ip_address
 }

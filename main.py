@@ -55,8 +55,9 @@ def criando_inventario(inventario):
 
 def run_ansible(playbook_path, inventario):
     print("Aguardando inicialização completa das maquinas virtuais...")
-    time.sleep(180)
+    # time.sleep(180)
     try:
+        os.chdir('../ansible')
         subprocess.run(['ansible-playbook', '-i', inventario, playbook_path], check=True)
         print("Playbook executado com sucesso!")
     except subprocess.CalledProcessError as e:
@@ -83,11 +84,11 @@ while not saida:
         + "[3] - VOLTAR AO MENU ANTERIOR\n"
         + "ESCOLHA O PROVEDOR DE NUVEM A SER UTILIZADO: ")
 
-        if provider == "1":
+        if provider == "1":     
             terraform_plan("infraestrutura/aws")
             terraform_apply("infraestrutura/aws")
             criando_inventario("./criando_inventario_aws.sh")
-            run_ansible("ansible/playbook.yml", "ansible/inventory/hosts")
+            run_ansible("playbook.yml", "inventory/hosts")
         elif provider == "2":
             terraform_plan("infraestrutura/azure")
             terraform_apply("infraestrutura/azure")
