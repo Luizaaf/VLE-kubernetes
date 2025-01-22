@@ -4,17 +4,6 @@
 
 Este guia vai explorar um processo passo a passo de como realizar o deploy em um cluster Kubernetes de uma aplicação flask que acessa uma banco de dados postgres.
 
-### Prerequisitos
-
-#### Ter acesso a uma conta em uma ambiente de Nuvem
-
-  - Para obter uma conta gratuita na AWS é preciso pedir ao seu professor que lhe insira em uma turma do AWS Academy, caso já seja seu caso siga para o proximo passo.
-  - Para criar uma conta gratuita na Azure você pode seguir o seguinte tutorial [Criando conta na azure](../configuracoes_md/criacao_conta_azure.md)
-
-#### Cluster Kubernetes no qual será realizado o deploy
-
-
-
 ### Deploy do banco de dados Postgres
 
 ### Criação de um Secret para Armazenar os Detalhes do Banco de Dados
@@ -190,5 +179,115 @@ Saída:
 
 
 ```bash
+cat > app-configmap.yml << EOF
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-configmap
+data:
+  dabase_url: postgres-svc
+EOF
+```
 
+#### Detalhes de configuração
+
++ **apiVersion** especifica a versão da API a ser usada para criar o ConfigMap.
++ **kind** define o tipo de recurso como ConfigMap.
++ **metadata** contém metadados sobre o ConfigMap, como o nome.
++ **data** armazena os dados do ConfigMap, onde as chaves são nomes de configuração e os valores são os dados associados. No exemplo, `dabase_url` aponta para `postgres-svc`.
+
+Aplique essa configuração com o comando:
+
+```bash
+kubectl apply -f app-configmap.yml.yml
+```
+
+Você pode verficiar se o configmap foi executado corretamente com o comando:
+
+```bash
+kubectl get configmap 
+```
+
+Saída:
+
+```bash
+
+```
+
+#### Criando um deployment para o nosso aplicativo.
+
+```bash
+cat > app-deployment.yml << EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-python
+  template:
+    metadata:
+      labels:
+        app: app-python
+    spec:
+      containers:
+        - name: app-python
+          image: 'laaf/python-app'
+          ports:
+            - containerPort: 5000
+          env:
+          - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: database-name
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: postgres-user
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: postgres-password
+          - name: POSTGRES_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: app-configmap
+                key: dabase_url
+EOF
+```
+
+
+Aplique essa configuração com o comando:
+
+```bash
+kubectl apply -f app-deployment.yml
+```
+
+#### Criando um service para o nosso aplicativo.
+
+```bash
+cat > app-svc.yml << EOF
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-svc
+spec:
+  selector:
+    app: app-python
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+      nodePort: 30000
+EOF
+```
+
+```bash
+kubectl apply -f app-svc.yml
 ```

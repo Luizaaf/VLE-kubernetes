@@ -1,8 +1,9 @@
 ## Ambientes Virtuais de Aprendizagem para o Kubernetes
-
+---
 <div style="text-align: justify;">
 Esse repositório oferece uma ferramenta de linha de comando que proporciona um ambiente de estudos para o Kubernetes utilizando o Kubeadm de maneira simples e intuitiva, visando o menor custo possível. A ferramenta é direcionada a usuários universitários da rede pública, sendo compatível com os provedores de nuvem Azure e AWS, que oferecem acesso gratuito para estudantes.
 </div>
+
 ---
 #### Observações
 ---
@@ -21,7 +22,7 @@ git clone https://github.com/Luizaaf/VLE-kubernetes.git ~/Downloads
 ---
 
 + Python:
- + O Python já vem pré-instalado em computadores Linux.
+	+ O Python já vem pré-instalado em computadores Linux.
 + Terraform.
 	+ Para instalar o terraform no linux Ubuntu execute, os seguintes comandos:
 	```bash
@@ -57,25 +58,43 @@ git clone https://github.com/Luizaaf/VLE-kubernetes.git ~/Downloads
 ### Criação de Contas nos Ambientes de Nuvem
 ---
 + **AWS:** Não é possível criar uma conta por conta própria. Solicite ao seu professor para incluí-lo em uma conta do AWS Academy.
-+ **Azure:** Para criar uma conta na Azure, siga o passo a passo contido no link: [Configurando conta gratuita na Azure](configuracoes_de_acesso/criacao_conta_azure.md).
++ **Azure:** Para criar uma conta na Azure, siga o passo a passo contido no link: [Configurando conta gratuita na Azure](configuracoes_md/criacao_conta_azure.md).
 ---
 ### Configuração da Ferramenta para Utilização do Ambiente de Nuvem
 ---
 Após a criação das contas conforme as instruções anteriores, é necessário garantir que a ferramenta tenha acesso a elas. Siga os passos de acordo com a nuvem escolhida:
 
-+ **AWS Academy:** Se for utilizar a AWS, siga as instruções em: [Configurando ferramenta para acessar o AWS Academy](configuracoes_de_acesso/configuracao_aws.md).
-+ **Azure:** Se optar pela Azure, siga as instruções em: [Configurando a ferramenta para acessar a Azure](configuracoes_de_acesso/configuracao_azure.md).
++ **AWS Academy:** Se for utilizar a AWS, siga as instruções em: [Configurando ferramenta para acessar o AWS Academy](configuracoes_md/configuracao_aws.md).
++ **Azure:** Se optar pela Azure, siga as instruções em: [Configurando a ferramenta para acessar a Azure](configuracoes_md/configuracao_azure.md).
 ---
 ### Utilizando a ferramenta.
 ---
-+ Acesse o diretório e execute o arquivo `main.py`.
++ Acesse o diretório e execute o arquivo main.py:
 
-```
+```bash
 cd ~/Downloads/VLE-kubernets
 python3 main.py
 ```
++ Você será apresentado à seguinte interface.
 
-+ Você será apresentado para a seguinte interface.
++ ![](configuracoes_md/images/interface_vle.png)
 
-+ ![](images/interface_vle.png)
++ Nessa interface, você tem acesso a 4 opções:
+
+1. CRIAR CLUSTER KUBERNETS.
+	+ Nesta opção, você pode criar um cluster Kubernetes para estudos. Ao selecionar esta opção, você verá a seguinte tela:
+	+ ![](configuracoes_md/images/criando_cluster.png)
+	+ Nessa tela, escolha a nuvem a ser utilizada e a criação do seu cluster será iniciada.
+2. CENÁRIO GUIADO.
+	+ Esta opção fornece um link para acessar um cenário guiado disponível neste repositório.
+3. DESTRUIR CLUSTER KUBERNETS.
+	+ Nesta opção, você pode destruir o cluster criado. Ao selecionar esta opção, verá a seguinte tela:
+	+ ![](configuracoes_md/images/destruindo_cluster.png)
+	+ Escolha a nuvem a ser utilizada e seu cluster será destruído.
+4. SAIR.
+	+ Esta opção encerra a ferramenta.
 ---
+
+## Cenário de estudo
+
+1. [Realizado deploy simples de uma aplicação Python no Kubernetes](cenarios/deploy_app.md)
