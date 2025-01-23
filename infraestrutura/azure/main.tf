@@ -8,9 +8,17 @@ terraform {
 }
 
 provider "azurerm" {
-  subscription_id = "d73c18d0-4278-43dc-b37b-b58fe35693e6"
-  tenant_id       = "9f23cf0a-4a0b-499a-8f2d-7ccdc2648847"
+  subscription_id = var.azurerm_subscription_id
+  tenant_id       = var.azurerm_tenant_id
   features {}
+}
+
+variable "azurerm_subscription_id" {
+  default = "default-subscription-id"
+}
+
+variable "azurerm_tenant_id" {
+  default = "default-tenant-id"
 }
 
 # Criando grupo de recursos

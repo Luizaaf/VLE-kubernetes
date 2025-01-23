@@ -4,6 +4,49 @@
 
 Este guia vai explorar um processo passo a passo de como realizar o deploy em um cluster Kubernetes de uma aplicação flask que acessa uma banco de dados postgres.
 
+## Prerequisitos
+
++ Para realizar esse cenário de estudos é necessário possuir um cluster kubernetes configurado. Você pode obter um seguindo o passo a passo contido em: [Ambientes Virtuais de Aprendizagem para o Kubernetes](../README.md)
+
+## Com o cluster criado realize o acesso SSH no masternode.
+
+### AWS (Caso vá utilizar AWS)
+
++ Recupere o IP do master node com o seguinte comando. 
+
+```bash
+aws ec2 describe-instances --filters "Name=tag:type,Values=master" --query 'Reservations[*].Instances[*].PublicIpAddress' | tr -d '[],"'
+```
+
++ Realize o login na instancia com o seguinte comando:
+
+```bash
+sudo chmod
+ssh -i ~/.aws/labsuser.pem ubuntu@<IP_MASTERNODE>
+
+# Substitua o <IP_MASTERNODE> pelo IP recuperado.
+```
+
+### Azure (Caso vá utilizar Azure)
+
+```bash
+az vm list-ip-addresses --resource-group kubernetes-resources -o table
+```
+
++ Esse comando irá retornar uma tabela com as três instancias criadas para o deploy do cluster, copie somente o ip do master node.
+
++ Realize o login na instancia com o seguinte comando:
+
+```bash
+ssh -i ~/.ssh/azure ubuntu@<IP_MASTERNODE>
+
+# Substitua o <IP_MASTERNODE> pelo IP recuperado.
+```
+
+---
+
+Após ter realizado o acesso ao master node, todos os comandos a seguir serão realizado nele.
+
 ### Deploy do banco de dados Postgres
 
 ### Criação de um Secret para Armazenar os Detalhes do Banco de Dados
@@ -56,7 +99,7 @@ Saída:
 
 #### Deployment Postgres
 
-Um deployment vai ser o objeto resposavel por gerenciar um conjunto de Pods para execução de um determinado trabalho. Iremos criar um deployment que será resposavel pela execução do Pod que irá conter o container do Postgres em execução. 
+Um [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) vai ser o objeto resposavel por gerenciar um conjunto de Pods para execução de um determinado trabalho. Iremos criar um deployment que será resposavel pela execução do Pod que irá conter o container do Postgres em execução. 
 
 
 #### Criando um deployment para o Postgres
@@ -132,7 +175,7 @@ Saída:
 
 #### Postgres Service
 
-Um service é um objeto Kubernetes usado para expor uma aplicação que está executnado em um Pod do cluster.
+Um [Service](https://kubernetes.io/docs/concepts/services-networking/service/) é um objeto Kubernetes usado para expor uma aplicação que está executnado em um Pod do cluster.
 
 #### Criando um service para o Postgres
 
@@ -177,6 +220,7 @@ Saída:
 
 #### Criando um configmap para o nosso aplicativo.
 
+Um [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/) no Kubernetes é um objeto usado para armazenar configurações não sensíveis em pares chave-valor. Ele permite que você separe as configurações do seu código-fonte, facilitando a atualização e a gestão das configurações sem necessitar recompilar a aplicação. Isso é especialmente útil para gerenciar a configuração de aplicações em contêineres de forma eficiente e segura.
 
 ```bash
 cat > app-configmap.yml << EOF
@@ -261,11 +305,16 @@ spec:
 EOF
 ```
 
-
 Aplique essa configuração com o comando:
 
 ```bash
 kubectl apply -f app-deployment.yml
+```
+
+Saída:
+
+```
+
 ```
 
 #### Criando um service para o nosso aplicativo.
@@ -288,6 +337,13 @@ spec:
 EOF
 ```
 
+Aplique essa configuração com o comando:
+
 ```bash
 kubectl apply -f app-svc.yml
+```
+
+Saída:
+
+```bash
 ```

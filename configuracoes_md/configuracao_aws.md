@@ -1,15 +1,41 @@
-+ **Acesse o AWS Academy.**
+## Configurando o AWS CLI
+
++ Acesse o AWS Academy.
 
 ![](images/console_aws.png)
 
-+ **Após ter acesso o AWS academy e iniciado seu laborátorio irá clicar em `AWS Details`, baixe sua chave de acesso, e logo depois clique em `AWS CLI show`, copie o conteúdo mostrado.**
+1. Após ter acesso o AWS academy e iniciado seu laborátorio irá clicar em `AWS Details`, e baixe sua chave de acesso.
 
-![](images/acesso_aws.png)
+![](images/baixando_chave.png)
 
-+ **Após isso execute o seguinte comando no terminal `aws configure`, esse comando irá gerar os arquivos de configuração do AWS CLI que irá permitir a coneção do terraform, deixe todos os campos em branco somente apertando enter.**
+2. Após isso clique em `AWS CLI: Show`, copie o conteúdo que irá aparecer.
 
-![](images/aws_configure.png)
+![](images/baixando_show.png)
 
-+ **Após isso pegue o conteudo copiado em `AWS CLI show` e cole em ~/.aws/credentials. Pronto você está pronto para utilizar a ferramenta na AWS.**
+3. Após isso execute os seguintes comandos em seu terminal.
 
-+ **OBS: Toda vez que você iniciar uma sessão no AWS Academy, suas credenciais irão ser alteradas, desse modo você precisar copiar seus dados e colar novamente em ~/.aws/credentials.**
+```bash
+# Crie o diretório de configuração do AWS CLI
+mkdir ~/.aws
+
+# Crie o arquivo de configuração do AWS CLI
+cat > ~/.aws/config << EOF
+[default]
+region = us-east-1
+output = json
+EOF
+```
+
+4. Após isso você irá colar o conteúdo copiado no passo 2 no arquivo `~/.aws/credentials`
+
+![](images/colando_arquivo.gif)
+
+5. A ferramenta espera que a chave de acesso esteja em `~/.aws/`, para funcionar corretamente, então por favor copie a chave de acesso baixada no passo para `~/.aws` e dê as permissões necessárias com o seguinte comando.
+
+```bash
+# Comando para dar as permissões necessárias.
+chmod 0600 ~/.aws/labsuser.pem
+```
+
+> [!IMPORTANT]
+> Toda vez que você iniciar uma sessão no AWS Academy, suas credenciais irão ser alteradas, desse modo você precisar copiar seus dados e colar novamente em ~/.aws/credentials.

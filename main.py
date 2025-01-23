@@ -55,7 +55,7 @@ def criando_inventario(inventario):
 
 def run_ansible(playbook_path, inventario):
     print("Aguardando inicialização completa das maquinas virtuais...")
-    # time.sleep(180)
+    time.sleep(120)
     try:
         os.chdir('../ansible')
         subprocess.run(['ansible-playbook', '-i', inventario, playbook_path], check=True)
