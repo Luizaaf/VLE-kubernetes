@@ -45,7 +45,13 @@ ssh -i ~/.ssh/azure ubuntu@<IP_MASTERNODE>
 
 ---
 
-Após ter realizado o acesso ao master node, todos os comandos a seguir serão realizado nele.
+Após ter realizado o acesso ao master node, todos os comandos a seguir serão realizado nele. Primeiro acesse como super usuario com o comando:
+
+```bash
+sudo su -
+```
+
+Pronto, agora siga o passo para realizar o deploy da aplicação.
 
 ### Deploy do banco de dados Postgres
 
@@ -93,8 +99,9 @@ kubectl get secret
 
 Saída:
 
-```bash
-
+```
+NAME              TYPE     DATA   AGE
+postgres-secret   Opaque   3      6s
 ```
 
 #### Deployment Postgres
@@ -169,8 +176,9 @@ kubectl get deployment
 
 Saída:
 
-```bash
-
+```
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+postgres-deployment   1/1     1            1           12s
 ```
 
 #### Postgres Service
@@ -214,8 +222,10 @@ kubectl get svc
 
 Saída:
 
-```bash
-
+```
+NAME           TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+kubernetes     ClusterIP   10.96.0.1      <none>        443/TCP    121m
+postgres-svc   ClusterIP   10.105.62.45   <none>        5432/TCP   4s
 ```
 
 #### Criando um configmap para o nosso aplicativo.
@@ -243,7 +253,7 @@ EOF
 Aplique essa configuração com o comando:
 
 ```bash
-kubectl apply -f app-configmap.yml.yml
+kubectl apply -f app-configmap.yml
 ```
 
 Você pode verficiar se o configmap foi executado corretamente com o comando:
@@ -254,8 +264,10 @@ kubectl get configmap
 
 Saída:
 
-```bash
-
+```
+NAME               DATA   AGE
+app-configmap      1      29s
+kube-root-ca.crt   1      123m
 ```
 
 #### Criando um deployment para o nosso aplicativo.
@@ -311,10 +323,18 @@ Aplique essa configuração com o comando:
 kubectl apply -f app-deployment.yml
 ```
 
+Você pode verficiar se o configmap foi executado corretamente com o comando:
+
+```bash
+kubectl get deployment 
+```
+
 Saída:
 
 ```
-
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+app-deployment        1/1     1            1           47s
+postgres-deployment   1/1     1            1           4m3s
 ```
 
 #### Criando um service para o nosso aplicativo.
@@ -343,7 +363,19 @@ Aplique essa configuração com o comando:
 kubectl apply -f app-svc.yml
 ```
 
-Saída:
+Você pode verficiar se o configmap foi executado corretamente com o comando:
 
 ```bash
+kubectl get svc
+``` 
+
+Saída:
+
 ```
+NAME           TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+app-svc        NodePort    10.96.164.6    <none>        5000:30000/TCP   32s
+kubernetes     ClusterIP   10.96.0.1      <none>        443/TCP          125m
+postgres-svc   ClusterIP   10.105.62.45   <none>        5432/TCP         4m12s
+```
+
+### Acessando a aplicação.
