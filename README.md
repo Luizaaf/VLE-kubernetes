@@ -1,8 +1,9 @@
 ## Ambientes Virtuais de Aprendizagem para o Kubernetes
 ---
-<div style="text-align: justify;">
+
+<p align="justify">
 Esse repositório oferece uma ferramenta de linha de comando que proporciona um ambiente de estudos para o Kubernetes utilizando o Kubeadm de maneira simples e intuitiva, visando o menor custo possível. A ferramenta é direcionada a usuários universitários da rede pública, sendo compatível com os provedores de nuvem Azure e AWS, que oferecem acesso gratuito para estudantes.
-</div>
+</p>
 
 ---
 #### Observações
@@ -15,7 +16,7 @@ Esse repositório oferece uma ferramenta de linha de comando que proporciona um 
 ___
 + Para instalar a ferramenta, basta clonar este repositório com o comando:
 ```bash
-git clone https://github.com/Luizaaf/VLE-kubernetes.git ~/Downloads
+git clone https://github.com/Luizaaf/VLE-kubernetes.git ~/Downloads/VLE-kubernets
 ```
 ---
 ### Dependências
@@ -26,32 +27,50 @@ git clone https://github.com/Luizaaf/VLE-kubernetes.git ~/Downloads
 + Terraform.
 	+ Para instalar o terraform no linux Ubuntu execute, os seguintes comandos:
 	```bash
-	cutl -s https://releases.hashicorp.com/terraform/1.10.4/terraform_1.10.4_linux_amd64.zip -o /tmp/terraform.zip
+	# Instalando o comando unzip, para extrair os arquivos
+	sudo apt update
+	sudo apt install -y unzip
+
+	curl -s https://releases.hashicorp.com/terraform/1.10.4/terraform_1.10.4_linux_amd64.zip -o /tmp/terraform.zip
 	unzip -o /tmp/terraform.zip -d /tmp
 	sudo mv /tmp/terraform /usr/local/bin/
 	```
-	+ Após isso, teste se o comando foi instalado corretamente executando `terraform --version`.
+	+ Após isso, teste se o comando foi instalado corretamente executando:
+	```bash
+	terraform --version
+	```
+	+ Saida:
+	
+	```
+	Terraform v1.10.4
+	on linux_amd64
+
+	Your version of Terraform is out of date! The latest version
+	is 1.10.5. You can update by downloading from https://www.terraform.io/downloads.html
+	```
 
 + Ansible.
-	+ Para instalar o Ansible no Linux utilizando o Python, execute o seguinte comando:
+	+ Instale o ansible por meio do seguinte comando:
 	```bash
-	sudo apt install python3-pip -y & pip3 install ansible
+	sudo apt install ansible -y
 	```
 
 + AWS CLI (caso você vá utilizar a AWS):
 	+ Para instalar a AWS CLI no Linux, execute os seguintes comandos:
 	```bash
-	pip3 boto3 botocore awscli
+	curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+	unzip awscliv2.zip
+	./aws/install
 	```
 + Azure CLI (caso vá utilizar a Azure):
 	+ Para instalar a Azure CLI no Linux, execute os seguintes comandos:
 	```bash
-	sudo apt install azure-cli
+	curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 	```
 + jq
 	+ Para instalar o comando jq no Linux, execute os seguintes comandos:
 	```bash
-	sudo apt install jq
+	sudo apt install jq -y
 	```
 	
 ---

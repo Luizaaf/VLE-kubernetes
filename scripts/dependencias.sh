@@ -2,33 +2,35 @@
 
 sistema=$(cat /etc/os-release | awk -F= '/^ID=/ {print $2}')
 
-if [ $sistema = 'fedora' ]; then
+if [ $sistema = 'ubuntu' ]; then
+	echo "Atualizando repósitorio de pacotes"
+	sudo apt update
 
-	echo "Instalando dependências necessárias..."
-	sudo dnf install python3 python3-pip azure-cli jq -y > /dev/null 2>&1
-	echo "Dependências instaladas com sucesso!"
+	echo "Instalando python3 e python3-pip"
+	apt install python3 python3-pip
 
-	echo "Instalando bibliotecas Python..."
-	pip3 install boto3 botocore ansible awscli > /dev/null 2>&1
-	echo "Bibliotecas Python instaladas com sucesso!"
+	echo "Instalando unzip, para descompactação de arquivos."
+	apt install -y unzip
 
-	echo "Baixando o Terraform..."
+	echo "Instalando o terraform."
 	curl -s https://releases.hashicorp.com/terraform/1.10.4/terraform_1.10.4_linux_amd64.zip -o /tmp/terraform.zip
-	echo "Descompactando o Terraform..."
-	unzip -o /tmp/terraform.zip -d /tmp > /dev/null 2>&1
-	echo "Movendo o Terraform para /usr/bin/..."
-	sudo mv /tmp/terraform /usr/bin/
-	echo "Terraform instalado com sucesso!"
+	unzip -o /tmp/terraform.zip -d /tmp
+	sudo mv /tmp/terraform /usr/local/bin/
 
-	echo "Tudo pronto! Você está pronto para usar as ferramentas instaladas."
+	echo "Instalando jq"
+	apt install jq -y
+	
+	echo "Você irá utilizar AWS ou Azure:"
+	read provider
+	provider_lower=$(echo "$provider" | tr '[:upper:]' '[:lower:]'
 
-elif [ $sistema = 'ubuntu' ]; then
-	sudo apt-get update
-	sudo apt-get install python3 python3-pip jq -y
-	pip3 install boto3 botocore ansible awscli azure-cli
-	curl https://releases.hashicorp.com/terraform/1.10.4/terraform_1.10.4_linux_amd64.zip -o /tmp/terraform.zip
-	unzip /tmp/terraform.zip
-	mv /tmp/terraform /usr/bin/
+	if [$provider_lower = 'aws']; then
+		curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+		unzip awscliv2.zip
+		./aws/install
+	elif [$provider_lower = 'azure']; then
+		curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+	fi
 else
 	echo "sistema não suportado!"
 fi
