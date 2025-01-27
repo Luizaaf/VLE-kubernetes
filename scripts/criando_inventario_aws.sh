@@ -7,7 +7,9 @@ worker_ip=$(terraform output -json | jq -r '.workers_ip.value[]')
 
 cd -  
 
-cat > ../ansible/inventory/hosts<< EOL
+mkdir -p ../ansible/inventory/
+
+cat > ../ansible/inventory/hosts << EOL
 [control_plane]
 $control_plane_ip
 

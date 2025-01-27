@@ -38,4 +38,4 @@ chmod 0600 ~/.aws/labsuser.pem
 ```
 
 > [!IMPORTANT]
-> Toda vez que você iniciar uma sessão no AWS Academy, suas credenciais irão ser alteradas, desse modo você precisar copiar seus dados e colar novamente em ~/.aws/credentials.
+> Toda vez que você iniciar uma sessão no AWS Academy, suas credenciais irão ser alteradas, desse modo você precisar copiar seus dados e colar novamente em ~/.aws/credentials, para a ferramenta funcionar corretamente.

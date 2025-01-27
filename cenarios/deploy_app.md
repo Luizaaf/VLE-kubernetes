@@ -21,7 +21,6 @@ aws ec2 describe-instances --filters "Name=tag:type,Values=master" --query 'Rese
 + Realize o login na instancia com o seguinte comando:
 
 ```bash
-sudo chmod
 ssh -i ~/.aws/labsuser.pem ubuntu@<IP_MASTERNODE>
 
 # Substitua o <IP_MASTERNODE> pelo IP recuperado.
@@ -378,4 +377,23 @@ kubernetes     ClusterIP   10.96.0.1      <none>        443/TCP          125m
 postgres-svc   ClusterIP   10.105.62.45   <none>        5432/TCP         4m12s
 ```
 
+
 ### Acessando a aplicação.
+
++ Realize os seguintes comandos em sua **máquina local**.
+
++ Recupere o IP do master node com o seguinte comando. 
+
+```bash
+aws ec2 describe-instances --filters "Name=tag:type,Values=master" --query 'Reservations[*].Instances[*].PublicIpAddress' | tr -d '[],"'
+```
+
++ Abra seu navegador e coloque no endereço na barra de pesquisa.
+
+```
+IP_MASTERNODE:30000
+```
+
++ Você deverá visualizar a seguinte página:
+
+![](images/pagina_inicial.webm)

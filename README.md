@@ -24,12 +24,16 @@ git clone https://github.com/Luizaaf/VLE-kubernetes.git ~/Downloads/VLE-kubernet
 
 + Python:
 	+ O Python já vem pré-instalado em computadores Linux.
+	
++ Unzip:
+	+ Para instalar o utilitario unzip no linux Ubuntu execute o seguinte comando:
+	```bash
+	sudo apt update
+	sudo apt install unzip -y
+	```
 + Terraform.
 	+ Para instalar o terraform no linux Ubuntu execute, os seguintes comandos:
 	```bash
-	# Instalando o comando unzip, para extrair os arquivos
-	sudo apt update
-	sudo apt install -y unzip
 
 	curl -s https://releases.hashicorp.com/terraform/1.10.4/terraform_1.10.4_linux_amd64.zip -o /tmp/terraform.zip
 	unzip -o /tmp/terraform.zip -d /tmp
@@ -60,7 +64,7 @@ git clone https://github.com/Luizaaf/VLE-kubernetes.git ~/Downloads/VLE-kubernet
 	```bash
 	curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 	unzip awscliv2.zip
-	./aws/install
+	sudo ./aws/install
 	```
 + Azure CLI (caso vá utilizar a Azure):
 	+ Para instalar a Azure CLI no Linux, execute os seguintes comandos:
