@@ -8,17 +8,7 @@ terraform {
 }
 
 provider "azurerm" {
-  subscription_id = var.azurerm_subscription_id
-  tenant_id       = var.azurerm_tenant_id
   features {}
-}
-
-variable "azurerm_subscription_id" {
-  default = "default-subscription-id"
-}
-
-variable "azurerm_tenant_id" {
-  default = "default-tenant-id"
 }
 
 # Criando grupo de recursos
@@ -62,6 +52,18 @@ resource "azurerm_network_security_group" "ControlNodeNSG" {
   }
 
   security_rule {
+    name                       = "AllowAppNodePort"
+    priority                   = 160
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "30000"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+  
+  security_rule {
     name                       = "AllowKubernetesAPI"
     priority                   = 110
     direction                  = "Inbound"
@@ -69,7 +71,7 @@ resource "azurerm_network_security_group" "ControlNodeNSG" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "6443"
-    source_address_prefix      = "*"
+    source_address_prefix      = "10.0.2.0/24"
     destination_address_prefix = "*"
   }
 
@@ -81,7 +83,7 @@ resource "azurerm_network_security_group" "ControlNodeNSG" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "2379-2380"
-    source_address_prefix      = "*"
+    source_address_prefix      = "10.0.2.0/24"
     destination_address_prefix = "*"
   }
 
@@ -93,7 +95,7 @@ resource "azurerm_network_security_group" "ControlNodeNSG" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "10250-10260"
-    source_address_prefix      = "*"
+    source_address_prefix      = "10.0.2.0/24"
     destination_address_prefix = "*"
   }
 
@@ -147,7 +149,7 @@ resource "azurerm_network_security_group" "WorkerNodeNSG" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "10249-10260"
-    source_address_prefix      = "*"
+    source_address_prefix      = "10.0.2.0/24"
     destination_address_prefix = "*"
   }
 
@@ -159,7 +161,7 @@ resource "azurerm_network_security_group" "WorkerNodeNSG" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "30000-32768"
-    source_address_prefix      = "*"
+    source_address_prefix      = "10.0.2.0/24"
     destination_address_prefix = "*"
   }
 

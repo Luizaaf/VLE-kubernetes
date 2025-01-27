@@ -12,6 +12,7 @@ az login
 
 ![](images/azure_tenant.png)
 
-+ **Copie seu `subscription_id` e `tenant_id` para o arquivo que se encontra em infraestrutura/azure/main.tf**
++ Pronto!!!
 
-![](images/tenant_tf.png)
+> [!IMPORTANT]
+> Caso voçê possua mais de uma conta na azure, é necessário que você defina a conta a ser utilizada.
