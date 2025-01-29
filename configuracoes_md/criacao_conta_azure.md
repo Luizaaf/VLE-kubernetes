@@ -24,3 +24,5 @@
 6. **Aceite os termos e pronto, você terá 100 USD para gastar como quiser na Azure.**
 
 ![](images/termos_de_uso.png)
+
++ Pronto! Agore siga para a [Configuração da Azure](../README.md/#4.-Configuração-da-Ferramenta-para-Utilização-do-Ambiente-de-Nuvem) 

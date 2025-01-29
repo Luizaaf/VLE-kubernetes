@@ -9,22 +9,25 @@ Esse repositório oferece uma ferramenta de linha de comando que proporciona um 
 #### Observações
 ---
 + Atualmente, a ferramenta pode criar clusters Kubernetes nas nuvens Azure e AWS.
-+ A ferramenta foi testada apenas nos ambientes Linux Ubuntu.
++ A ferramenta foi testada apenas nos ambientes Linux Ubuntu, caso queira utilizá-la no windows siga esse passo a passo para configuração do [WSL]() no windows.
 
 ---
-### Baixando a ferramenta.
+### 1. Baixando a ferramenta.
 ___
++ Instale o git no linux ubuntu com o seguinte comando
+```bash
+sudo apt install git
+```
 + Para instalar a ferramenta, basta clonar este repositório com o comando:
 ```bash
 git clone https://github.com/Luizaaf/VLE-kubernetes.git ~/Downloads/VLE-kubernets
 ```
 ---
-### Dependências
+### 2. Resolvendo dependências.
 ---
 
 + Python:
 	+ O Python já vem pré-instalado em computadores Linux.
-	
 + Unzip:
 	+ Para instalar o utilitario unzip no linux Ubuntu execute o seguinte comando:
 	```bash
@@ -78,19 +81,19 @@ git clone https://github.com/Luizaaf/VLE-kubernetes.git ~/Downloads/VLE-kubernet
 	```
 	
 ---
-### Criação de Contas nos Ambientes de Nuvem
+### 3. Criação de Contas nos Ambientes de Nuvem
 ---
 + **AWS:** Não é possível criar uma conta por conta própria. Solicite ao seu professor para incluí-lo em uma conta do AWS Academy.
 + **Azure:** Para criar uma conta na Azure, siga o passo a passo contido no link: [Configurando conta gratuita na Azure](configuracoes_md/criacao_conta_azure.md).
 ---
-### Configuração da Ferramenta para Utilização do Ambiente de Nuvem
+### 4. Configuração da Ferramenta para Utilização do Ambiente de Nuvem
 ---
 Após a criação das contas conforme as instruções anteriores, é necessário garantir que a ferramenta tenha acesso a elas. Siga os passos de acordo com a nuvem escolhida:
 
 + **AWS Academy:** Se for utilizar a AWS, siga as instruções em: [Configurando ferramenta para acessar o AWS Academy](configuracoes_md/configuracao_aws.md).
 + **Azure:** Se optar pela Azure, siga as instruções em: [Configurando a ferramenta para acessar a Azure](configuracoes_md/configuracao_azure.md).
 ---
-### Utilizando a ferramenta.
+### 5. Utilizando a ferramenta.
 ---
 + Acesse o diretório e execute o arquivo main.py:
 

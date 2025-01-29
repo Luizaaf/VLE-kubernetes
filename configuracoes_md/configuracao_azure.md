@@ -12,7 +12,7 @@ az login
 
 ![](images/azure_tenant.png)
 
-+ Pronto!!!
-
 > [!IMPORTANT]
 > Caso voçê possua mais de uma conta na azure, é necessário que você defina a conta a ser utilizada.
+
++ Pronto! Agore siga para a [utilização da ferramenta](../README.md/#5.-Utilizando-a-ferramenta) 

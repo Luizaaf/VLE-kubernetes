@@ -1,0 +1,175 @@
+---
+- name: Instalando o container runtime
+  hosts: all
+  gather_facts: true
+  become: yes
+  tasks:
+
+    - name: Carregando os modulos na inicialização.
+      ansible.builtin.copy:
+        src: ./k8s.conf
+        dest: /etc/modules-load.d/k8s.conf
+        mode: '644'
+    - name: Adicionando o modulo overlay
+      modprobe:
+        name: overlay
+        state: present
+    - name: Adicionando o modulo br_netfilter
+      modprobe:
+        name: br_netfilter
+        state: present
+
+    - name: Configurando o sysctl
+      ansible.builtin.copy:
+        src: ./k8s-cri.conf
+        dest:  /etc/sysctl.d/k8s.conf
+        mode: '644'
+    
+    - name: Aplicando os parametros do sysctl
+      ansible.builtin.command: "sysctl --system"
+
+    - name: Adicionando chave gpg
+      ansible.builtin.apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Adicionando o repositório do containerd 
+      ansible.builtin.lineinfile: 
+        path: /etc/apt/sources.list.d/docker.list 
+        line: "deb https://download.docker.com/linux/ubuntu noble stable" 
+        state: present 
+        create: yes
+  
+    - name: Instalando o containerd
+      ansible.builtin.apt:
+        name: containerd.io
+        update_cache: yes
+
+    - name: Criando o arquivo de configuração do containerd
+      ansible.builtin.shell: containerd config default > /etc/containerd/config.toml
+
+    - name: Alterando o arquivo de configuração
+      ansible.builtin.replace:
+        path: /etc/containerd/config.toml
+        regexp: 'SystemdCgroup = false'
+        replace: 'SystemdCgroup = true'
+
+    - name: Reiniciando o containerd
+      ansible.builtin.service:
+        name: containerd
+        state: restarted
+
+    - name: Baixar runc
+      ansible.builtin.get_url:
+        url: https://github.com/opencontainers/runc/releases/download/v1.1.12/runc.amd64
+        dest: /tmp/runc.amd64
+        mode: '0755'
+
+    - name: Instalar runc
+      ansible.builtin.command: mv /tmp/runc.amd64 /usr/local/sbin/runc
+      become: yes
+    
+    - name: Baixar plugins CNI
+      ansible.builtin.get_url:
+        url: https://github.com/containernetworking/plugins/releases/download/v1.5.0/cni-plugins-linux-amd64-v1.5.0.tgz
+        dest: /tmp/cni-plugins-linux-amd64-v1.5.0.tgz
+
+    - name: Criar diretório /opt/cni/bin
+      ansible.builtin.file:
+        path: /opt/cni/bin
+        state: directory
+        mode: '0755'
+      become: yes
+
+    - name: Extrair plugins CNI para /opt/cni/bin
+      ansible.builtin.unarchive:
+        src: /tmp/cni-plugins-linux-amd64-v1.5.0.tgz
+        dest: /opt/cni/bin
+        remote_src: yes
+      become: yes
+
+- name: Instalando o kubeadm, kubelet e kubectl
+  hosts: all
+  become: yes
+  tasks:
+    - name: Instalando pré-requisitos
+      ansible.builtin.apt:
+        pkg:
+          - apt-transport-https 
+          - ca-certificates 
+          - curl
+          - gpg
+        state: present
+        update_cache: yes
+        
+    - name: Baixando o chave do repositórios de pacotes do Kubernetes
+      ansible.builtin.shell: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key | sudo gpg --yes --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+    - name: Adicionando o repositório do Kubernetes 
+      ansible.builtin.lineinfile: 
+        path: /etc/apt/sources.list.d/kubernetes.list 
+        line: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.31/deb/ /" 
+        state: present 
+        create: yes
+
+    - name: Instalando os pacotes do kubernetes
+      ansible.builtin.apt:
+        name:
+          - kubelet=1.31.2-1.1
+          - kubeadm=1.31.2-1.1
+          - kubectl=1.31.2-1.1
+        update_cache: yes
+
+- name: Incializando o cluster
+  hosts: control_plane
+  gather_facts: true
+  become: yes
+  tasks:
+    - name: Armazenar o endereço IP em uma variável
+      ansible.builtin.set_fact:
+        master_ip: "{{ ansible_default_ipv4.address }}"
+
+    - name: Limpando instalação existente
+      command: kubeadm reset -f
+
+    - name: Comando init
+      command: kubeadm init --pod-network-cidr=192.168.0.0/16         # 10.244.0.0/16 --apiserver-advertise-address={{ master_ip }}
+
+    - name: criação do diretorio .kube
+      file:
+        path: ~/.kube
+        state: directory
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: copiando o arquivo kube config
+      copy:
+        dest: ~/.kube/config
+        src: /etc/kubernetes/admin.conf
+        remote_src: yes
+        owner: root
+        group: root
+        mode: 0640
+
+    # - name: Instalando flanell
+    #   command: kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+
+    - name: Instalando calico
+      command: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+
+    - name: Executando o comando join
+      shell: kubeadm token create --print-join-command
+      register: print_join_command
+
+    - name: Adicionando o comando de join no fact
+      set_fact: join_command="{{ print_join_command.stdout }}"
+
+- name: Inserindo os workers nods
+  hosts: worker_node
+  become: yes
+  tasks:
+    - name: Limpando instalação existente
+      command: kubeadm reset -f
+    - name: Executando o comando de join
+      command: "{{ hostvars[groups['control_plane'][0]]['join_command'] }}"

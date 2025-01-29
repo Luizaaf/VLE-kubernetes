@@ -12,30 +12,32 @@
 
 ![](images/baixando_show.png)
 
-3. Após isso execute os seguintes comandos em seu terminal.
+3. Após isso execute o seguinte comandos em seu terminal.
 
 ```bash
-# Crie o diretório de configuração do AWS CLI
-mkdir ~/.aws
-
-# Crie o arquivo de configuração do AWS CLI
-cat > ~/.aws/config << EOF
-[default]
-region = us-east-1
-output = json
-EOF
+aws configure
 ```
+
+![](images/aws_configure.gif)
 
 4. Após isso você irá colar o conteúdo copiado no passo 2 no arquivo `~/.aws/credentials`
 
 ![](images/colando_arquivo.gif)
 
-5. A ferramenta espera que a chave de acesso esteja em `~/.aws/`, para funcionar corretamente, então por favor copie a chave de acesso baixada no passo para `~/.aws` e dê as permissões necessárias com o seguinte comando.
+5. A ferramenta espera que a chave de acesso esteja em `~/.aws/`, para funcionar corretamente, então por favor copie a chave de acesso baixada no passo 1 para `~/.aws`, com o seguinte comando.
 
 ```bash
-# Comando para dar as permissões necessárias.
+mv LOCAL_ONDE_A_CHAVE_FOI_BAIXADA ~/.aws
+
+```
+
++ Dê as permissões necessárias com o seguinte comando.
+
+```bash
 chmod 0600 ~/.aws/labsuser.pem
 ```
 
 > [!IMPORTANT]
-> Toda vez que você iniciar uma sessão no AWS Academy, suas credenciais irão ser alteradas, desse modo você precisar copiar seus dados e colar novamente em ~/.aws/credentials, para a ferramenta funcionar corretamente.
+> Toda vez que você iniciar uma sessão no AWS Academy, suas credenciais irão ser alteradas, desse modo você precisa copiar seus dados e colar novamente em ~/.aws/credentials, para a ferramenta funcionar corretamente.
+
++ Pronto! Agore siga para a [utilização da ferramenta](../README.md/#5.-Utilizando-a-ferramenta) 
