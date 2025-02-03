@@ -226,16 +226,26 @@ python3 main.py
 + Nessa interface, você tem acesso a 4 opções:
 
 1. CRIAR CLUSTER KUBERNETS.
+	
 	+ Nesta opção, você pode criar um cluster Kubernetes para estudos. Ao selecionar esta opção, você verá a seguinte tela:
+	
 	![](images/criando_cluster.png)
+	
 	+ Nessa tela, escolha a nuvem a ser utilizada e a criação do seu cluster será iniciada.
+
 2. CENÁRIO GUIADO.
+	
 	+ Esta opção fornece um link para acessar um cenário guiado disponível neste repositório.
 3. DESTRUIR CLUSTER KUBERNETS.
+	
 	+ Nesta opção, você pode destruir o cluster criado. Ao selecionar esta opção, verá a seguinte tela:
+	
 	![](images/destruindo_cluster.png)
+	
 	+ Escolha a nuvem a ser utilizada e seu cluster será destruído.
+
 4. SAIR.
+
 	+ Esta opção encerra a ferramenta.
 ---
 

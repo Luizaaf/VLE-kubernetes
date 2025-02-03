@@ -231,7 +231,7 @@ postgres-svc   ClusterIP   10.105.62.45   <none>        5432/TCP   4s
 
 Um [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/) no Kubernetes é um objeto usado para armazenar configurações não sensíveis em pares chave-valor. Ele permite que você separe as configurações do seu código-fonte, facilitando a atualização e a gestão das configurações sem necessitar recompilar a aplicação. Isso é especialmente útil para gerenciar a configuração de aplicações em contêineres de forma eficiente e segura.
 
-<details> <summary> 2. <b>Azure:</b>: Caso tenha optado pela utilização da AWS. <b>(clique para exibir)</b> </summary>
+<details> <summary> 2. <b>AWS:</b> Caso tenha optado pela utilização da AWS. <b>(clique para exibir)</b> </summary>
 
 ```bash
 cat > app-configmap.yml << EOF
@@ -271,6 +271,8 @@ app-configmap      1      29s
 kube-root-ca.crt   1      123m
 ```
 
+</details>
+
 <details> <summary> 2. <b>Azure:</b>: Caso tenha optado pela utilização da Azure. <b>(clique para exibir)</b> </summary>
 
 > A Azure apresenta um problema na resolução de nomes que ainda não foi solucionado, desse modo foi pensando em uma maneira de contornar esse problema enquanto ele ainda não foi resolivdo, para isso siga as instruções abaixo:
@@ -284,7 +286,7 @@ kind: ConfigMap
 metadata:
   name: app-configmap
 data:
-  dabase_url: postgres-svc
+  dabase_url: IP_postgres-svc
 EOF
 ```
 
