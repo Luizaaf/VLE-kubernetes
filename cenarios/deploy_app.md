@@ -231,6 +231,8 @@ postgres-svc   ClusterIP   10.105.62.45   <none>        5432/TCP   4s
 
 Um [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/) no Kubernetes é um objeto usado para armazenar configurações não sensíveis em pares chave-valor. Ele permite que você separe as configurações do seu código-fonte, facilitando a atualização e a gestão das configurações sem necessitar recompilar a aplicação. Isso é especialmente útil para gerenciar a configuração de aplicações em contêineres de forma eficiente e segura.
 
+<details> <summary> 2. <b>Azure:</b>: Caso tenha optado pela utilização da AWS. <b>(clique para exibir)</b> </summary>
+
 ```bash
 cat > app-configmap.yml << EOF
 apiVersion: v1
@@ -268,6 +270,52 @@ NAME               DATA   AGE
 app-configmap      1      29s
 kube-root-ca.crt   1      123m
 ```
+
+<details> <summary> 2. <b>Azure:</b>: Caso tenha optado pela utilização da Azure. <b>(clique para exibir)</b> </summary>
+
+> A Azure apresenta um problema na resolução de nomes que ainda não foi solucionado, desse modo foi pensando em uma maneira de contornar esse problema enquanto ele ainda não foi resolivdo, para isso siga as instruções abaixo:
+
++ Nós realizamos no passo anterior a criação de um service para o nosso banco de dados postgres, devemos então pegar o endereço IP do nosso service que aparece na saída do comando `kubectl get svc ` e colocar no local indicado no arquivos abaixo.
+
+```bash
+cat > app-configmap.yml << EOF
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-configmap
+data:
+  dabase_url: postgres-svc
+EOF
+```
+
+#### Detalhes de configuração
+
++ **apiVersion** especifica a versão da API a ser usada para criar o ConfigMap.
++ **kind** define o tipo de recurso como ConfigMap.
++ **metadata** contém metadados sobre o ConfigMap, como o nome.
++ **data** armazena os dados do ConfigMap, onde as chaves são nomes de configuração e os valores são os dados associados. No exemplo, `dabase_url` aponta para `postgres-svc`.
+
+Aplique essa configuração com o comando:
+
+```bash
+kubectl apply -f app-configmap.yml
+```
+
+Você pode verficiar se o configmap foi executado corretamente com o comando:
+
+```bash
+kubectl get configmap 
+```
+
+Saída:
+
+```
+NAME               DATA   AGE
+app-configmap      1      29s
+kube-root-ca.crt   1      123m
+```
+
+</details>
 
 #### Criando um deployment para o nosso aplicativo.
 

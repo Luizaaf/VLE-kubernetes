@@ -141,7 +141,7 @@ git clone https://github.com/Luizaaf/VLE-kubernetes.git ~/Downloads/VLE-kubernet
 ### 4. CONFIGURAÇÃO DA FERRAMENTA PARA UTILIZAÇÃO DO AMBIENTE DE NUVEM
 ---
 
-+ Após a criação das contas conforme as instruções anteriores, é necessário garantir que a ferramenta tenha acesso a elas. Siga os passos de acordo com a nuvem escolhida:
+<p align="justify">Após a criação das contas conforme as instruções anteriores, é necessário garantir que a ferramenta tenha acesso a elas. Siga os passos de acordo com a nuvem escolhida:<\p>
 
 <details> <summary> 1. <b>AWS Academy:</b>: Caso tenha optado pela utilização da AWS. <b>(clique para exibir)</b> </summary>
 
@@ -157,7 +157,7 @@ git clone https://github.com/Luizaaf/VLE-kubernetes.git ~/Downloads/VLE-kubernet
 
 2. Após isso clique em `AWS CLI: Show`, copie o conteúdo que irá aparecer.
 
-![](images/baixando_show.png)
+![](images/copiando_credentials.gif)
 
 3. Após isso execute o seguinte comandos em seu terminal.
 
@@ -208,12 +208,10 @@ az login
 > [!IMPORTANT]
 > Caso voçê possua mais de uma conta na azure, é necessário que você defina a conta a ser utilizada.
 
-+ Pronto! Agore siga para a [utilização da ferramenta](../README.md/#5.-Utilizando-a-ferramenta) 
-
 </details>
 
 ---
-### 5. Utilizando a ferramenta.
+### 5. UTILIZANDO A FERRAMENTA
 ---
 + Acesse o diretório e execute o arquivo main.py:
 
@@ -241,6 +239,6 @@ python3 main.py
 	+ Esta opção encerra a ferramenta.
 ---
 
-## Cenário de estudo
+## CENÁRIO DE ESTUDOS
 
 1. [Realizado deploy simples de uma aplicação Python no Kubernetes](cenarios/deploy_app.md)
