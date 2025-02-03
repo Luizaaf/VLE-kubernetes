@@ -10,10 +10,74 @@ Este repositório disponibiliza uma ferramenta de linha de comando que simplific
 ---
 
 + **Compatibilidade com nuvens:** Criação de clusters Kubernetes nas plataformas **Azure** e **AWS**.
-+ **Requisitos do sistema:** Testada em ambientes *Linux Ubuntu*. Para uso no Windows, configure o [WSL]() seguindo o guia passo a passo.
++ **Requisitos do sistema:** Testada em ambientes *Linux Ubuntu*. Para uso no Windows.
++ <details> <summary> No windows você pode usar o WSL <b>(clique para exibir)</b> </summary>
+	
+	## Configurando o WSL2.
+	
+	+ Abra o prompt de comando como administrador.
+	
+	![](images/abrindo_prompt.jpeg)
+	
+	+ Execute o seguinte comando para instalar configurar o wsl e instalar distruibuição Ubuntu 24.04:
+	
+	```cmd
+	wsl --install -d Ubuntu-24.04
+	```
+
+	![](images/comando_instalacao.jpeg)
+
+	+ Isso vai demorar um pouco!
+	
+	+ Após a instalação ser finalizada, a distruibuição será lançada. Informe o nome de usuário e a senha.
+	
+	![](images/configuracao_distribuicao.jpeg)
+
+	+ Pronto você finalizou a configuração do wsl e instalacao da distribuicao Ubuntu 24.04
+	
+	![](images/finalizacao_wsl.jpeg)
+
+	
+</details>
 
 ---
-## 1. BAIXANDO A FERRAMENTA
+### 1. CRIAÇÃO DE CONTAS NOS AMBIENTES DE NUVEM
+---
+
+1. **AWS:** Para utilizar a AWS, *solicite ao seu professor* o cadastro no [AWS Academy](https://aws.amazon.com/education/awsacademy/). Não é possível criar uma conta por conta própria.
+<details> <summary> 2. <b>Azure</b>: Criar conta gratuíta no Azure para estudantes <b>(clique para exibir)</b> </summary>
+
+### CRIANDO CONTA GRATUITA NO AZURE PARA ESTUDANTES
+
+1. Acesse o site https://azure.microsoft.com/pt-br/free/students
+
+![](images/site_azure.png)
+
+2. Acesse sua conta microssoft colocando usuário e senha. Caso não possua crie uma.
+
+![](images/acessar_conta.png)
+
+3. Preencha o questionário com seu nome, sobrenome, país de origem, universidade, data de nascimento e email institucional.
+
+![](images/questionario_01.png)
+![](images/questionario_02.png)
+
+4. Realize a verificação do email institucional.
+
+![](images/verificacao_email.png)
+
+5. Após isso você será redirecionado para uma página que irá testar se você é realmente humano. Realize o teste e siga para a proxima página.
+
+![](images/teste_logico.png)
+
+6. Aceite os termos e pronto, você terá 100 USD para gastar como quiser na Azure.
+
+![](images/termos_de_uso.png)
+
+</details>
+
+---
+## 2. BAIXANDO A FERRAMENTA
 ___
 
 1. Instale o [Git](https://git-scm.com/downloads/linux) no Ubuntu usando o comando abaixo:
@@ -28,10 +92,18 @@ sudo apt install git
 git clone https://github.com/Luizaaf/VLE-kubernetes.git ~/Downloads/VLE-kubernetes
 ```
 ---
-## 2. RESOLVENDO DEPENDÊNCIAS
+## 3. RESOLVENDO DEPENDÊNCIAS
 ---
 
-<details> <summary> Pré-requisitos para utilização <b>(clique para exibir)</b> </summary>
++ A ferramenta possui um script para automação da resolução de dependências que você pode executar com o seguinte comando:
+
+```bash
+cd ~/Downloads/VLE-kubernetes/scripts # Entrar no diretório da ferramenta
+sudo ./dependencias.sh # Executar o script de automação
+
+```
+
+<details> <summary> Caso o script não tenha funcionado corretamente você pode realizar a instalação manual das dependências <b>(clique para exibir)</b> </summary>
 
 + **[Python](https://www.python.org/):**  
 
@@ -102,48 +174,12 @@ git clone https://github.com/Luizaaf/VLE-kubernetes.git ~/Downloads/VLE-kubernet
 </details>
 
 ---
-### 3. CRIAÇÃO DE CONTAS NOS AMBIENTES DE NUVEM
----
-
-1. **AWS:** Para utilizar a AWS, *solicite ao seu professor* o cadastro no [AWS Academy](https://aws.amazon.com/education/awsacademy/). Não é possível criar uma conta por conta própria.
-<details> <summary> 2. <b>Azure</b>: Criar conta gratuíta no Azure para estudantes <b>(clique para exibir)</b> </summary>
-
-### CRIANDO CONTA GRATUITA NO AZURE PARA ESTUDANTES
-
-1. Acesse o site https://azure.microsoft.com/pt-br/free/students
-
-![](images/site_azure.png)
-
-2. Acesse sua conta microssoft colocando usuário e senha. Caso não possua crie uma.
-
-![](images/acessar_conta.png)
-
-3. Preencha o questionário com seu nome, sobrenome, país de origem, universidade, data de nascimento e email institucional.
-
-![](images/questionario_01.png)
-![](images/questionario_02.png)
-
-4. Realize a verificação do email institucional.
-
-![](images/verificacao_email.png)
-
-5. Após isso você será redirecionado para uma página que irá testar se você é realmente humano. Realize o teste e siga para a proxima página.
-
-![](images/teste_logico.png)
-
-6. Aceite os termos e pronto, você terá 100 USD para gastar como quiser na Azure.
-
-![](images/termos_de_uso.png)
-
-</details>
-
----
 ### 4. CONFIGURAÇÃO DA FERRAMENTA PARA UTILIZAÇÃO DO AMBIENTE DE NUVEM
 ---
 
 <p align="justify">Após a criação das contas conforme as instruções anteriores, é necessário garantir que a ferramenta tenha acesso a elas. Siga os passos de acordo com a nuvem escolhida:<\p>
 
-<details> <summary> 1. <b>AWS Academy:</b>: Caso tenha optado pela utilização da AWS. <b>(clique para exibir)</b> </summary>
+<details> <summary> 1. <b>AWS Academy:</b> Caso tenha optado pela utilização da AWS. <b>(clique para exibir)</b> </summary>
 
 ## Configurando o AWS CLI
 
@@ -189,7 +225,7 @@ chmod 0600 ~/.aws/labsuser.pem
 
 </details>
 
-<details> <summary> 2. <b>Azure:</b>: Caso tenha optado pela utilização da Azure. <b>(clique para exibir)</b> </summary>
+<details> <summary> 2. <b>Azure:</b> Caso tenha optado pela utilização da Azure. <b>(clique para exibir)</b> </summary>
 
 ### Configurando a Azure para uso da ferramenta.
 
