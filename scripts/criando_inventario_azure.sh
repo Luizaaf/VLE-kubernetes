@@ -17,7 +17,7 @@ $control_plane_ip
 $worker1_ip
 
 [all:vars]
-ansible_ssh_private_key_file=~/.ssh/azure
+ansible_ssh_private_key_file=~/.ssh/vle
 ansible_user=ubuntu
 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 EOL

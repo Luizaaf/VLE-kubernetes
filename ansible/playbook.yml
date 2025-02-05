@@ -1,8 +1,10 @@
 ---
 - name: Instalando o container runtime
   hosts: all
+  gather_facts: true
   become: yes
   tasks:
+
     - name: Carregando os modulos na inicialização.
       ansible.builtin.copy:
         src: ./k8s.conf
@@ -52,14 +54,40 @@
         regexp: 'SystemdCgroup = false'
         replace: 'SystemdCgroup = true'
 
-    # - name: Alterando o arquivo de configuração
-    #  ansible.builtin.command: sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml
-
     - name: Reiniciando o containerd
       ansible.builtin.service:
         name: containerd
         state: restarted
+
+    - name: Baixar runc
+      ansible.builtin.get_url:
+        url: https://github.com/opencontainers/runc/releases/download/v1.1.12/runc.amd64
+        dest: /tmp/runc.amd64
+        mode: '0755'
+
+    - name: Instalar runc
+      ansible.builtin.command: mv /tmp/runc.amd64 /usr/local/sbin/runc
+      become: yes
     
+    - name: Baixar plugins CNI
+      ansible.builtin.get_url:
+        url: https://github.com/containernetworking/plugins/releases/download/v1.5.0/cni-plugins-linux-amd64-v1.5.0.tgz
+        dest: /tmp/cni-plugins-linux-amd64-v1.5.0.tgz
+
+    - name: Criar diretório /opt/cni/bin
+      ansible.builtin.file:
+        path: /opt/cni/bin
+        state: directory
+        mode: '0755'
+      become: yes
+
+    - name: Extrair plugins CNI para /opt/cni/bin
+      ansible.builtin.unarchive:
+        src: /tmp/cni-plugins-linux-amd64-v1.5.0.tgz
+        dest: /opt/cni/bin
+        remote_src: yes
+      become: yes
+
 - name: Instalando o kubeadm, kubelet e kubectl
   hosts: all
   become: yes
@@ -94,13 +122,18 @@
 
 - name: Incializando o cluster
   hosts: control_plane
+  gather_facts: true
   become: yes
   tasks:
+    - name: Armazenar o endereço IP em uma variável
+      ansible.builtin.set_fact:
+        master_ip: "{{ ansible_default_ipv4.address }}"
+
     - name: Limpando instalação existente
       command: kubeadm reset -f
 
     - name: Comando init
-      command: kubeadm init
+      command: kubeadm init --pod-network-cidr=192.168.0.0/16         # 10.244.0.0/16 --apiserver-advertise-address={{ master_ip }}
 
     - name: criação do diretorio .kube
       file:
@@ -118,6 +151,9 @@
         owner: root
         group: root
         mode: 0640
+
+    # - name: Instalando flanell
+    #   command: kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 
     - name: Instalando calico
       command: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml

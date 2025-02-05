@@ -93,13 +93,14 @@ while not saida:
             terraform_plan("infraestrutura/azure")
             terraform_apply("infraestrutura/azure")
             criando_inventario("./criando_inventario_azure.sh")
+            run_ansible("playbook.yml", "inventory/hosts")            
         elif provider == "3":
             ...
         else: 
             print("OPÇÃO INVALIDA, POR FAVOR TENTE NOVAMENTE.")
 
     elif opt == "2":
-        ...
+        print('Realizando deploy simples de uma aplicação Python no Kubernetes: https://github.com/Luizaaf/VLE-kubernetes/blob/main/cenarios/deploy_app.md')
     elif opt == "3":
         os.system("clear")
         provider = input("[1] - AWS\n"

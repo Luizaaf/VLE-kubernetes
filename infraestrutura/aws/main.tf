@@ -19,11 +19,16 @@ data "aws_vpc" "default" {
 locals {
   ami_id           = "ami-0866a3c8686eaeeba"
   instance_type    = "t2.medium"
-  access_key       = "vockey"
+  # access_key       = "vockey"
   volume_size      = 20
   inventory_path   = "../ansible/inventory/aws_ec2.yml"
-  key_path         = "~/Downloads/labsuser.pem"
+  key_path         = "~/.ssh/vle.pub"
   playbook_path    = "../ansible/playbook.yml"
+}
+
+resource "aws_key_pair" "vle-key" {
+  key_name   = "vle-key"  # Unique name for the key in AWS
+  public_key = file(local.key_path)  # Path to your public key
 }
 
 # Grupo de Segurança
@@ -72,7 +77,7 @@ resource "aws_instance" "master" {
   ami                    = local.ami_id
   instance_type          = local.instance_type
   vpc_security_group_ids = [aws_security_group.this.id]
-  key_name               = local.access_key
+  key_name               = aws_key_pair.vle-key.key_name
   count                  = 1
 
   ebs_block_device {
@@ -90,7 +95,7 @@ resource "aws_instance" "workers" {
   ami                    = local.ami_id
   instance_type          = local.instance_type
   vpc_security_group_ids = [aws_security_group.this.id]
-  key_name               = local.access_key
+  key_name               = aws_key_pair.vle-key.key_name
   count                  = 2
 
   ebs_block_device {

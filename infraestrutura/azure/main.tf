@@ -246,7 +246,7 @@ resource "azurerm_linux_virtual_machine" "master_node" {
 
   admin_ssh_key {
     username   = "ubuntu"
-    public_key = file("~/.ssh/id_rsa.pub")
+    public_key = file("~/.ssh/vle.pub")
   }
 
   os_disk {
@@ -275,7 +275,7 @@ resource "azurerm_linux_virtual_machine" "worker-node1" {
 
   admin_ssh_key {
     username   = "ubuntu"
-    public_key = file("~/.ssh/azure.pub")
+    public_key = file("~/.ssh/vle.pub")
   }
 
   os_disk {

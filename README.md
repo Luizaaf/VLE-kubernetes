@@ -10,41 +10,40 @@ Este repositório disponibiliza uma ferramenta de linha de comando que simplific
 ---
 
 + **Compatibilidade com nuvens:** Criação de clusters Kubernetes nas plataformas **Azure** e **AWS**.
-+ **Requisitos do sistema:** Testada em ambientes *Linux Ubuntu*. Para uso no Windows.
-+ <details> <summary> No windows você pode usar o WSL <b>(clique para exibir)</b> </summary>
++ **Requisitos do sistema:** Testada em ambientes *Linux Ubuntu*.
+<details> <summary> No windows você pode usar o WSL <b>(clique para exibir)</b> </summary>
 	
-	## Configurando o WSL2.
+## Configurando o WSL2.
 	
-	+ Abra o prompt de comando como administrador.
+1. Abra o prompt de comando como administrador.
 	
-	![](images/abrindo_prompt.jpeg)
+![](images/abrindo_prompt.jpeg)
 	
-	+ Execute o seguinte comando para instalar configurar o wsl e instalar distruibuição Ubuntu 24.04:
+2. Execute o seguinte comando para configurar o wsl e instalar distruibuição Ubuntu 24.04:
 	
-	```cmd
-	wsl --install -d Ubuntu-24.04
-	```
+```cmd
+wsl --install -d Ubuntu-24.04
+```
 
-	![](images/comando_instalacao.jpeg)
+![](images/comando_instalacao.jpeg)
 
-	+ Isso vai demorar um pouco!
++ Isso vai demorar um pouco!
 	
-	+ Após a instalação ser finalizada, a distruibuição será lançada. Informe o nome de usuário e a senha.
+3. Após a instalação ser finalizada, a distruibuição será lançada. Informe o nome de usuário e senha que você desejar.
 	
-	![](images/configuracao_distribuicao.jpeg)
+![](images/configuracao_distribuicao.jpeg)
 
-	+ Pronto você finalizou a configuração do wsl e instalacao da distribuicao Ubuntu 24.04
+4. Pronto você finalizou a configuração do wsl e instalacão da distribuicao Ubuntu 24.04
 	
-	![](images/finalizacao_wsl.jpeg)
+![](images/finalizacao_wsl.jpeg)
 
-	
 </details>
 
 ---
 ### 1. CRIAÇÃO DE CONTAS NOS AMBIENTES DE NUVEM
 ---
 
-1. **AWS:** Para utilizar a AWS, *solicite ao seu professor* o cadastro no [AWS Academy](https://aws.amazon.com/education/awsacademy/). Não é possível criar uma conta por conta própria.
+1. **AWS**: Para utilizar a AWS, *solicite ao seu professor* o cadastro no [AWS Academy](https://aws.amazon.com/education/awsacademy/). Não é possível criar uma conta por conta própria.
 <details> <summary> 2. <b>Azure</b>: Criar conta gratuíta no Azure para estudantes <b>(clique para exibir)</b> </summary>
 
 ### CRIANDO CONTA GRATUITA NO AZURE PARA ESTUDANTES
@@ -53,11 +52,11 @@ Este repositório disponibiliza uma ferramenta de linha de comando que simplific
 
 ![](images/site_azure.png)
 
-2. Acesse sua conta microssoft colocando usuário e senha. Caso não possua crie uma.
+2. Acesse sua conta microssoft colocando usuário e senha. Caso não possua uma, você pode criar.
 
 ![](images/acessar_conta.png)
 
-3. Preencha o questionário com seu nome, sobrenome, país de origem, universidade, data de nascimento e email institucional.
+3. Preencha o questionário com seu nome, sobrenome, país de origem, universidade, data de nascimento e email **institucional**.
 
 ![](images/questionario_01.png)
 ![](images/questionario_02.png)
@@ -88,6 +87,8 @@ sudo apt install git
 
 2. **Instalação da ferramenta:** Clone o repositório executando o comando abaixo:
 
+> Esse comando irá clonar o repositório no diretorio `~/Downloads/VLE-kubernetes`
+
 ```bash
 git clone https://github.com/Luizaaf/VLE-kubernetes.git ~/Downloads/VLE-kubernetes
 ```
@@ -100,27 +101,26 @@ git clone https://github.com/Luizaaf/VLE-kubernetes.git ~/Downloads/VLE-kubernet
 ```bash
 cd ~/Downloads/VLE-kubernetes/scripts # Entrar no diretório da ferramenta
 sudo ./dependencias.sh # Executar o script de automação
-
 ```
 
 <details> <summary> Caso o script não tenha funcionado corretamente você pode realizar a instalação manual das dependências <b>(clique para exibir)</b> </summary>
 
 + **[Python](https://www.python.org/):**  
 
-   + Já incluído por padrão em sistemas Linux. Verifique com `python3 --version`.
+   + Já vem incluído por padrão em sistemas Linux. Verifique com `python3 --version`.
 
 + **Unzip:**  
    
-   + Instale no Ubuntu com:  
+   + Instale no Ubuntu com os comandos abaixo:  
    
    ```bash
-   sudo apt update        
+   sudo apt update
    sudo apt install unzip
    ```
 
 + Terraform:
 	
-	+ Instale a versão 1.10.4 com:
+	+ Instale a versão 1.10.4 com os comandos abaixo:
 	
 	```bash
 	curl -s https://releases.hashicorp.com/terraform/1.10.4/terraform_1.10.4_linux_amd64.zip -o /tmp/terraform.zip
@@ -145,7 +145,7 @@ sudo ./dependencias.sh # Executar o script de automação
 	+ Instale o Ansible no Ubuntu com o seguinte comando:
 	
 	```bash
-	sudo apt install ansible -y
+	sudo apt install ansible
 	```
 
 + AWS CLI (apenas necessário caso vá utilizar a AWS):
@@ -177,51 +177,42 @@ sudo ./dependencias.sh # Executar o script de automação
 ### 4. CONFIGURAÇÃO DA FERRAMENTA PARA UTILIZAÇÃO DO AMBIENTE DE NUVEM
 ---
 
-<p align="justify">Após a criação das contas conforme as instruções anteriores, é necessário garantir que a ferramenta tenha acesso a elas. Siga os passos de acordo com a nuvem escolhida:<\p>
+<p align="justify">Após a criação das contas conforme as instruções anteriores, é necessário garantir que a ferramenta tenha acesso a elas. Siga os passos de acordo com a nuvem escolhida: </p>
 
 <details> <summary> 1. <b>AWS Academy:</b> Caso tenha optado pela utilização da AWS. <b>(clique para exibir)</b> </summary>
 
 ## Configurando o AWS CLI
 
-+ Acesse o AWS Academy.
++ Acesse o AWS Academy e inicie seu laboratorio.
 
 ![](images/console_aws.png)
 
-1. Após ter acesso o AWS academy e iniciado seu laborátorio irá clicar em `AWS Details`, e baixe sua chave de acesso.
-
-![](images/baixando_chave.png)
-
-2. Após isso clique em `AWS CLI: Show`, copie o conteúdo que irá aparecer.
+1. Após isso clique em `AWS CLI: Show`, e copie o conteúdo que irá aparecer.
 
 ![](images/copiando_credentials.gif)
 
-3. Após isso execute o seguinte comandos em seu terminal.
+2. Após isso execute o seguinte comandos em seu terminal.
 
 ```bash
 aws configure
 ```
 
++ Você irá deixar os dois primeiros campos em branco, e irá informar somente a região e formato de saída padrão como segue o video acima.
+
 ![](images/aws_configure.gif)
 
-4. Após isso você irá colar o conteúdo copiado no passo 2 no arquivo `~/.aws/credentials`
+3. Após isso você irá colar o conteúdo copiado no passo 2 no arquivo `~/.aws/credentials`
 
 ![](images/colando_arquivo.gif)
 
-5. A ferramenta espera que a chave de acesso esteja em `~/.aws/`, para funcionar corretamente, então por favor copie a chave de acesso baixada no passo 1 para `~/.aws`, com o seguinte comando.
+4. Após isso você irá gerar a chave de acesso que será utilizada pela ferramenta com o seguinte comando.
 
 ```bash
-mv LOCAL_ONDE_A_CHAVE_FOI_BAIXADA ~/.aws
-
-```
-
-+ Dê as permissões necessárias com o seguinte comando.
-
-```bash
-chmod 0600 ~/.aws/labsuser.pem
+ssh-keygen -t ed25519 -f ~/.ssh/minha-chave -N ""
 ```
 
 > [!IMPORTANT]
-> Toda vez que você iniciar uma sessão no AWS Academy, suas credenciais irão ser alteradas, desse modo você precisa copiar seus dados e colar novamente em ~/.aws/credentials, para a ferramenta funcionar corretamente.
+> Toda vez que você iniciar uma sessão no AWS Academy, suas credenciais irão ser alteradas, desse modo você precisa copiar seus dados e colar novamente em ~/.aws/credentials, para que a ferramenta funcione corretamente.
 
 </details>
 
@@ -229,15 +220,17 @@ chmod 0600 ~/.aws/labsuser.pem
 
 ### Configurando a Azure para uso da ferramenta.
 
-+ **Execute o seguinte comando para logar em seu navegador padrão.**
+1. Execute o comando abaixo em seu terminal.
 
 ```
 az login
 ```
 
++ Esse comando irá abrir o seu navegador padrão, por onde você irá realizar o login na conta azure criada anteriormente.
+
 ![](images/login_azure.png)
 
-+ **Será apresentado essa saída em seu terminal**
+2. Será apresentado essa saída em seu terminal.
 
 ![](images/azure_tenant.png)
 
