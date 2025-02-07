@@ -21,7 +21,7 @@ aws ec2 describe-instances --filters "Name=tag:type,Values=master" --query 'Rese
 + Realize o login na instancia com o seguinte comando:
 
 ```bash
-ssh -i ~/.aws/labsuser.pem ubuntu@<IP_MASTERNODE>
+ssh -i ~/.aws/vle ubuntu@<IP_MASTERNODE>
 
 # Substitua o <IP_MASTERNODE> pelo IP recuperado.
 ```
@@ -37,7 +37,7 @@ az vm list-ip-addresses --resource-group kubernetes-resources -o table
 + Realize o login na instancia com o seguinte comando:
 
 ```bash
-ssh -i ~/.ssh/azure ubuntu@<IP_MASTERNODE>
+ssh -i ~/.ssh/vle ubuntu@<IP_MASTERNODE>
 
 # Substitua o <IP_MASTERNODE> pelo IP recuperado.
 ```
