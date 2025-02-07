@@ -208,7 +208,7 @@ aws configure
 4. Após isso você irá gerar a chave de acesso que será utilizada pela ferramenta com o seguinte comando.
 
 ```bash
-ssh-keygen -t ed25519 -f ~/.ssh/minha-chave -N ""
+ssh-keygen -t ed25519 -f ~/.ssh/vle -N ""
 ```
 
 > [!IMPORTANT]
@@ -234,6 +234,11 @@ az login
 
 ![](images/azure_tenant.png)
 
+3. Após isso você irá gerar a chave de acesso que será utilizada pela ferramenta com o seguinte comando.
+
+```bash
+ssh-keygen -t ed25519 -f ~/.ssh/vle -N ""
+
 > [!IMPORTANT]
 > Caso voçê possua mais de uma conta na azure, é necessário que você defina a conta a ser utilizada.
 
@@ -245,7 +250,7 @@ az login
 + Acesse o diretório e execute o arquivo main.py:
 
 ```bash
-cd ~/Downloads/VLE-kubernets
+cd ~/Downloads/VLE-kubernetes
 python3 main.py
 ```
 + Você será apresentado à seguinte interface.

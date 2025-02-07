@@ -12,6 +12,9 @@ if [ $sistema = 'ubuntu' ]; then
 	echo "==> Instalando unzip, para descompactação de arquivos."
 	sudo apt-get install -y unzip >/dev/null 
 
+	echo "==> Instalando Ansible"
+	sudo apt-get install ansible -y
+
 	echo "==> Instalando o terraform."
 	curl -s https://releases.hashicorp.com/terraform/1.10.4/terraform_1.10.4_linux_amd64.zip -o /tmp/terraform.zip >/dev/null
 	unzip -o /tmp/terraform.zip -d /tmp >/dev/null 
