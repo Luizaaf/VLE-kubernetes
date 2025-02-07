@@ -238,6 +238,7 @@ az login
 
 ```bash
 ssh-keygen -t ed25519 -f ~/.ssh/vle -N ""
+```
 
 > [!IMPORTANT]
 > Caso voçê possua mais de uma conta na azure, é necessário que você defina a conta a ser utilizada.
