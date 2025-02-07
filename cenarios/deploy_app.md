@@ -21,7 +21,7 @@ aws ec2 describe-instances --filters "Name=tag:type,Values=master" --query 'Rese
 + Realize o login na instancia com o seguinte comando:
 
 ```bash
-ssh -i ~/.aws/vle ubuntu@<IP_MASTERNODE>
+ssh -i ~/.ssh/vle ubuntu@<IP_MASTERNODE>
 
 # Substitua o <IP_MASTERNODE> pelo IP recuperado.
 ```
