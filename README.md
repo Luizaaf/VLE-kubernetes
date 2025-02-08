@@ -208,7 +208,7 @@ aws configure
 4. Após isso você irá gerar a chave de acesso que será utilizada pela ferramenta com o seguinte comando.
 
 ```bash
-ssh-keygen -t ed25519 -f ~/.ssh/vle -N ""
+ssh-keygen -f ~/.ssh/vle -N ""
 ```
 
 > [!IMPORTANT]
@@ -237,7 +237,7 @@ az login
 3. Após isso você irá gerar a chave de acesso que será utilizada pela ferramenta com o seguinte comando.
 
 ```bash
-ssh-keygen -t ed25519 -f ~/.ssh/vle -N ""
+ssh-keygen -f ~/.ssh/vle -N ""
 ```
 
 > [!IMPORTANT]
