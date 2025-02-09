@@ -434,7 +434,7 @@ postgres-svc   ClusterIP   10.105.62.45   <none>        5432/TCP         4m12s
 
 <details> <summary>Caso esteja utilizando a AWS (clique para exibir)</summary>
 
-+ Recupere o IP do master node com o seguinte comando. 
++ Execute em sua máquina local o seguinte comando para recuperar o IP do master node: 
 
 ```bash
 aws ec2 describe-instances --filters "Name=tag:type,Values=master" --query 'Reservations[*].Instances[*].PublicIpAddress' | tr -d '[],"'
@@ -449,7 +449,7 @@ IP_MASTERNODE:30000
 
 <details> <summary>Caso esteja utilizando a Azure (clique para exibir)</summary>
 
-+ Execute o seguinte comando o copie o IP do worker node
++ Execute em sua máquina local o seguinte comando e copie o IP do worker node
 
 ```bash
 az vm list-ip-addresses --resource-group kubernetes-resources -o table
